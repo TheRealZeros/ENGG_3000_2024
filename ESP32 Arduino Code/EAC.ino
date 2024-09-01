@@ -25,8 +25,11 @@ void loop() {
     
 }
 
-void setMotor(int) {
+void setMotor(int x) {
     
+    dcMotor.attach(MOTOR_PIN);
+    dcMotor.write(255);
+
 }
 
 void setServo(int) {

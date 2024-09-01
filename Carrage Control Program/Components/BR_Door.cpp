@@ -1,7 +1,9 @@
 #include "BR_Door.h"
+#include "BR_EAC_Networking_Commands.h"
 
 // Constructor implementation
 BR_Door::BR_Door() {
+    BR_EAC_Networking_Commands espNetworkCommands;
     doorStatus = D_Status::CLOSE;
 }
 
@@ -16,9 +18,11 @@ void BR_Door::setDoorStatus(D_Status status) {
 }
 
 void BR_Door::openDoor() {
-    // Implementation for opening the door
+    espNetworkCommands.ccpOpenDoor();
+    doorStatus = D_Status::OPEN;
 }
 
 void BR_Door::closeDoor() {
-    // Implementation for closing the door
+    espNetworkCommands.ccpCloseDoor();
+    doorStatus = D_Status::CLOSE;
 }
