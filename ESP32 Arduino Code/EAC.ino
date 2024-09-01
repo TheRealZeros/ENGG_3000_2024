@@ -31,8 +31,9 @@ void loop()
 
 void setMotor(int x)
 {
-    x = map(speed, 0, 255, 0, 251);
-    dcMotor.write(x);
+
+    dcMotor.attach(MOTOR_PIN);
+    dcMotor.write(255);
 }
 
 void setServo(int)
