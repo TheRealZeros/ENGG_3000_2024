@@ -1,8 +1,31 @@
+// Status.h file
 #ifndef STATUS_H
 #define STATUS_H
 
-// Define the Status enum class
 enum class Status {
+    ON,
+    OFF,
+    ERR
+};
+
+enum class D_Status {
+    OPEN,
+    CLOSE,
+    ERR
+};
+
+enum class M_Status {
+    MOVE,
+    STOP,
+    PEND,
+    ERR
+};
+
+enum class C_Status {
+    ON,
+    OFF,
+    CRASH,
+    MANSTP,
     ERR
 };
 
