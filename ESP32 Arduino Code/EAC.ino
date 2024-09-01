@@ -11,7 +11,18 @@ void setup() {
 }
 
 void loop() {
+    
+    while(mStatus = 1) {
+        setMotor(speed);
+        serial.delay(200);
+    }
 
+    if(dStatus = 0) {
+        setServo(0);
+    } else {
+        setServo(180);
+    }
+    
 }
 
 void setMotor(int) {

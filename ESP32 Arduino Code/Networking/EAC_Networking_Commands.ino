@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include <Servo.h>
+#include <ArduinoJson.h>
 
 class EAC_Networking_Commands
 {
@@ -6,69 +9,48 @@ class EAC_Networking_Commands
     {
         Serial.println("Moving forward...");
         speed = 32;
-        String jsonString;
-        if (serialiseJSON(jsonString, "CCP", "Forward", speed, "Closed", "On"))
-        {
-            // Send jsonString over the network
-            sendData(jsonString);
-        }
+        mStatus = 1;
+        dStatus = 0;
     }
 
     void ccpBackward()
     {
         Serial.println("Moving backward...");
         speed = -22;
-        String jsonString;
-        if (serialiseJSON(jsonString, "CCP", "Backward", speed, "Closed", "On"))
-        {
-            // Send jsonString over the network
-            sendData(jsonString);
-        }
+        mStatus = 1;
+        dStatus = 0;
     }
 
     void ccpStop()
     {
         Serial.println("Stopping...");
         speed = 0;
-        String jsonString;
-        if (serialiseJSON(jsonString, "CCP", "Stop", speed, "Closed", "On"))
-        {
-            // Send jsonString over the network
-            sendData(jsonString);
-        }
+        mStatus = 0;
+        dStatus = 0;
     }
 
     void ccpEmergencyStop()
     {
         Serial.println("Emergency Stop!");
         speed = 0;
-        String jsonString;
-        if (serialiseJSON(jsonString, "CCP", "Emergency_Stop", speed, "Closed", "Off"))
-        {
-            // Send jsonString over the network
-            sendData(jsonString);
-        }
+        mStatus = 0;
+        dStatus = 0;
     }
 
     void ccpOpenDoor()
     {
         Serial.println("Opening door...");
-        String jsonString;
-        if (serialiseJSON(jsonString, "CCP", "Open_Door", 0, "Open", "On"))
-        {
-            // Send jsonString over the network
-            sendData(jsonString);
-        }
+        dStatus = 1;
     }
 
     void ccpCloseDoor()
     {
         Serial.println("Closing door...");
-        String jsonString;
-        if (serialiseJSON(jsonString, "CCP", "Close_Door", 0, "Closed", "On"))
-        {
-            // Send jsonString over the network
-            sendData(jsonString);
+        dStatus = 0;
+
+        if(error) {
+            Serial.println("Error: Cannot close door");
+            dStatus = 2;
         }
     }
 
