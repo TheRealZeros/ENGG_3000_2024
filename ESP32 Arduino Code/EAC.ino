@@ -17,9 +17,9 @@ void loop() {
     serial.delay(200);
 
     if(dStatus = 0) {
-        setServo(0);
+        setBothServos(0);
     } else {
-        setServo(180);
+        setBothServos(180);
     }
     
 }
@@ -29,7 +29,7 @@ void setMotor(int x) {
     dcMotor.write(currentSpeed)
 }
 
-void setServo(int x) {
+void setBothServos(int x) {
     sgServo1.write(x);
     sgServo2.write(x);
 }

@@ -1,12 +1,13 @@
 #include <WiFi.h>
 #include <WiFiUDP.h>
+#include <Serial.h>
 #include <ArduinoJson.h>
 
 class EAC_Networking_Control {
 private:
     // WiFi Credentials
-    const String ssid = "EAC-Network";
-    const String password = "HolyMoly";
+    const char* ssid = "EAC-Network";
+    const char* password = "HolyMoly";
     
     // UDP Settings
     WiFiUDP udp;
@@ -17,6 +18,7 @@ private:
 
     // JSON 
     StaticJsonDocument<1024> doc;
+
 public:
 
     void setup() {
@@ -26,7 +28,7 @@ public:
     }
 
     void loop() {
-        
+        checkUDPPacket();
     }
 
     void startUDP(unsigned int port) {
@@ -35,12 +37,10 @@ public:
     }
 
     void connectToWiFi(string ssid, string password) {
-        WiFi.begin(ssid, password)
-        if (WiFi.begin() != WL_CONNECTED)
-        {
+        WiFi.begin(ssid, password);
+        if (WiFi.begin() != WL_CONNECTED) {
             Serial.println("Connecting to WiFi...");
-            while (WiFi.status() != WL_CONNECTED)
-            {
+            while (WiFi.status() != WL_CONNECTED) {
                 delay(1000);
                 Serial.print(".");
             }
@@ -68,6 +68,6 @@ public:
             Serial.print(F("Couldn't parse JSON: :( "));
             Serial.println(error.f_str());
         return;
-    }
+        }
     }
 }
