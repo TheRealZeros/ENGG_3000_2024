@@ -5,18 +5,25 @@
 class EAC_Networking_Commands
 {
 
-    void ccpForward()
+    void ccpForward(String action)
     {
-        Serial.println("Moving forward...");
-        speed = 32;
-        mStatus = 1;
-        dStatus = 0;
+        if(action = "Slow") {
+            Serial.println("Moving forward Slow...");
+            speed = 25;
+            mStatus = 1;
+            dStatus = 0;
+        } else if(action = "Fast") {
+            Serial.println("Moving forward...");
+            speed = 75;
+            mStatus = 1;
+            dStatus = 0;
+        }
     }
 
     void ccpBackward()
     {
         Serial.println("Moving backward...");
-        speed = -22;
+        speed = -25;
         mStatus = 1;
         dStatus = 0;
     }

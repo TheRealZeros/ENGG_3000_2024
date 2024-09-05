@@ -1,4 +1,5 @@
-int speed;
 int dStatus;
 int mStatus;
-float circumference = 0.2;
+int currentSpeed;
+int targetSpeed;
+int speedChangeRate = 10;
