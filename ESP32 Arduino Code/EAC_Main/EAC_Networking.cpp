@@ -65,7 +65,7 @@ void readJson() {
     }
 }
 
-void checkMsg(const char msg[]) {
+void checkMsgForSend(const char msg[]) {
     newJson["eacSpeed"] = currentSpeed;
     newJson["doorStatus"] = currentDoorStatus;
     newJson["motorStatus"] = currentMotorStatus;

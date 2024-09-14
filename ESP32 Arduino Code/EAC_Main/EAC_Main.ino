@@ -35,7 +35,7 @@ void loop() {
 
   // Read the JSON message from the CCP
   readJson();
-  checkMsg(ccpMessage);
+  checkMsgForSend(ccpMessage);
 
   // Spin the motor & update depending on variables
   spinMotor();

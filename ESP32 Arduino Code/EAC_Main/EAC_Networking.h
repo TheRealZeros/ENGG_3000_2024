@@ -9,8 +9,8 @@
 #include <WiFiClient.h>
 #include <WiFiUdp.h>
 #include <SPI.h>
-#include <ArduinoJson.h>
 #include <stdlib.h>
+#include <ArduinoJson.h>
 
 // Internal Libraries
 #include "EAC_Variables.h"
@@ -35,6 +35,6 @@ void startWifi();
 void startUDP();
 void firstUDPmsg();
 void readJson();
-void checkMsg(const char msg[]);
+void checkMsgForSend(const char msg[]);
 
 #endif // EAC_NETWORKING_H
