@@ -7,6 +7,7 @@
 Servo doorServoL;
 Servo doorServoR;
 
+/* The following function does the initial setup o the servo including the PWM frequcny and the .attach() function */
 void setupServos() {
     doorServoL.setPeriodHertz(50); // PWM frequency for SG90
     doorServoR.setPeriodHertz(50); 
@@ -14,6 +15,7 @@ void setupServos() {
     doorServoR.attach(Servo2_PWM1B, 500, 2400); // Minimum and maximum pulse width (in µs) 
 }
 
+/* The following function will check the door status and if it is meant to be open (True) then it ill open otherwise do the opposite and close (False)*/
 void updateDoors(bool doorStatus) {
     if(doorStatus) {
         doorServoL.write(180);

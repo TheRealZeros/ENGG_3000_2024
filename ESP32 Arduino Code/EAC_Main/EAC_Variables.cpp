@@ -19,6 +19,7 @@ unsigned long currentTime = 0;
 unsigned long oldTime = 0;
 unsigned long deltaTime = 0;
 
+/* This function will get an approximate time difference in comparissson of the rest of the time / micros function */
 void getDeltaTime() {
   currentTime = micros();
   deltaTime = currentTime - oldTime;

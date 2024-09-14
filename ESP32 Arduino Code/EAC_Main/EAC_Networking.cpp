@@ -18,6 +18,8 @@ char ccpMessage[] = "";
 char eacMessage[] = "";
 
 // Functions
+
+/* The following function will start the WiFi as required */
 void startWifi() {
     Serial.begin(115200);
     WiFi.begin(ssid, pass);
@@ -29,6 +31,7 @@ void startWifi() {
     Serial.println(WiFi.localIP());
 }
 
+/* The following function will start the UDP as required */
 void startUDP() {
     udp.begin(udpPort);
     Serial.println(udpPort);
@@ -36,6 +39,7 @@ void startUDP() {
     firstUDPmsg();
 }
 
+/* The following function will send the first UDP message */
 void firstUDPmsg() {
     const char* buffer = "EAC Says Hello World!";
     udp.beginPacket(udpAdd, udpPort);
@@ -44,6 +48,7 @@ void firstUDPmsg() {
     Serial.println("First UDP message sent");
 }
 
+/* The following function will read the JSON message from the CCP and delegate the appropriate variables to the EAC variables*/
 void readJson() {
     int packetSize = udp.parsePacket();
     if (packetSize) {
@@ -65,6 +70,7 @@ void readJson() {
     }
 }
 
+/* The following function will check the message that the EAC receives from the CCP and delegate them to the variables read by the EAC */
 void checkMsgForSend(const char msg[]) {
     newJson["eacSpeed"] = currentSpeed;
     newJson["doorStatus"] = currentDoorStatus;
