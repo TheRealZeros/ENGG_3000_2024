@@ -129,7 +129,6 @@ void readJson() {
   int packetSize = udp.parsePacket();
   if(packetSize) {
     int size = udp.read(readBuffer, packetSize);
-    //readBuffer[size] = '\0';
     Serial.println(readBuffer);
     Serial.println(curentSpeed);
     deserializeJson(json, readBuffer);

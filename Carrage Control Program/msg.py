@@ -58,7 +58,6 @@ threading.Thread(target = ESPsend).start()
 threading.Thread(target = ESPread).start()
 
 
-
 while(True):
     x = input("to ESP")
     y = x.split()
