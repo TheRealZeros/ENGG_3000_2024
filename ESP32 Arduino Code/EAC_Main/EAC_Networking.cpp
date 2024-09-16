@@ -20,7 +20,7 @@ char eacMessage[] = "";
 // Functions
 
 /* The following function will start the WiFi as required */
-void startWifi() {
+void initialiseWifi() {
     Serial.begin(115200);
     WiFi.begin(ssid, pass);
     Serial.println("Wifi has started");
@@ -32,7 +32,7 @@ void startWifi() {
 }
 
 /* The following function will start the UDP as required */
-void startUDP() {
+void initialiseUDP() {
     udp.begin(udpPort);
     Serial.println(udpPort);
     Serial.println("UDP has started");
@@ -74,7 +74,7 @@ void readJson() {
 void checkMsgForSend(const char msg[]) {
     newJson["eacSpeed"] = currentSpeed;
     newJson["doorStatus"] = currentDoorStatus;
-    newJson["motorStatus"] = currentMotorStatus;
+    newJson["motorStatus"] = motorStatus;
     newJson["message"] = eacMessage;
 
     if(msg == "STAT") {

@@ -9,6 +9,7 @@
 #include "EAC_Networking.h"
 #include "EAC_ServoControl.h"
 #include "EAC_MotorControl.h"
+#include "EAC_LEDScreen.h"
 
 // PIN Definitions
 #define CLK_DIR 17
@@ -20,10 +21,20 @@
 ///////////////////////////////////////// Intial ESP32 Setup /////////////////////////////////////////
 void setup() {
   
-  startWifi();
-  startUDP();
-  setupMotors();
-  setupServos();
+  // Starts the WiFi Connection
+  initialiseWifi();
+
+  // Starts the UDP Connection
+  initialiseUDP();
+
+  // Initialises the motor
+  initialiseMotors();
+
+  // Initialises the door servos
+  initialiseServos();
+
+  // Initialises the LCD
+  initialiseLCD();
   Serial.println("EAC Setup has finished");
 
 }
@@ -39,7 +50,20 @@ void loop() {
 
   // Spin the motor & update depending on variables
   spinMotor();
-  updateMotors();
+
+  // Update the direction of the motor
+  updateDirection();
+
+  // Change the target speed of the motor
+  changeTargetSpeed(motorStatus);
+
+  // Update the motors speed
+  updateCurrentSpeed();
+
+  // print LCD Components
+  printLCD();
+
+  // Update the doors
   updateDoors(targetDoorStatus);
 
   // Delay for 100ms

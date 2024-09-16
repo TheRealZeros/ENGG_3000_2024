@@ -8,13 +8,15 @@
 #include "EAC_Variables.h"
 
 // PIN Definitions
-#define MotorPinA 16
-#define MotorPinB 17
+#define MotorPinA 27
+#define MotorPinB 26
 #define MotorPinP 14
 
 // Function Declarations
-void setupMotors();
+void initialiseMotors();
 void spinMotor();
-void updateMotors();
+void changeTargetSpeed(int mStatus);
+void updateCurrentSpeed();
+
 
 #endif // EAC_MOTORCONTROL_H

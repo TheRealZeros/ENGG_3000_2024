@@ -31,8 +31,8 @@ extern char ccpMessage[];
 extern char eacMessage[];
 
 // Function Prototypes
-void startWifi();
-void startUDP();
+void initialiseWifi();
+void initialiseUDP();
 void firstUDPmsg();
 void readJson();
 void checkMsgForSend(const char msg[]);

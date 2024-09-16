@@ -5,7 +5,7 @@
 
 
 /* The following function will set the pins of the motor */
-void setupMotors() {
+void initialiseMotors() {
   pinMode(MotorPinA, OUTPUT);
   pinMode(MotorPinB, OUTPUT);
   pinMode(MotorPinP, OUTPUT);
@@ -17,20 +17,32 @@ void spinMotor() {
   digitalWrite(MotorPinB, LOW);
 }
 
+/* The following function checks motor status */
+void changeTargetDirection(int mStatus) {
+
+  // If motor should be REVERSE (0)
+  if(mStatus == 0) {
+    digitalWrite(MotorPinA, LOW);
+    digitalWrite(MotorPinB, HIGH);
+  } else 
+  // If motor should be FULL POWER (1)
+  if(mStatus == 1) {
+    digitalWrite(MotorPinA, HIGH);
+    digitalWrite(MotorPinB, LOW); 
+  } 
+  delay(200);
+}
+
 /* The following function will update the motor speed depending on the current speed in tangent with the target speed, using the acceleration as the baseline */
-void updateMotors() {
-  if(currentSpeed != targetSpeed) {
-    double accDelta = (acceleration*deltaTime)/1000;
-    if(abs(currentSpeed - targetSpeed) < accDelta) {
-      currentSpeed = targetSpeed;
+void updateCurrentSpeed(int mStatus) {
+
+  while(currentSpeed != targetSpeed) {
+    if(currentSpeed < targetSpeed) {
+      currentSpeed += acceleration;
     } else if(currentSpeed > targetSpeed) {
-      currentSpeed = currentSpeed - accDelta;
-    } else {
-      currentSpeed = currentSpeed + accDelta;
+      currentSpeed -= acceleration;
     }
   }
-  if(targetSpeed = 10) {
-    currentSpeed = 100;
-  }
   digitalWrite(MotorPinP, currentSpeed);
+  delay(200);
 }

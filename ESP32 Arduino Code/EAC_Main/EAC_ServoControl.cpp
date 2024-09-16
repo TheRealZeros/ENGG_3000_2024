@@ -8,7 +8,7 @@ Servo doorServoL;
 Servo doorServoR;
 
 /* The following function does the initial setup o the servo including the PWM frequcny and the .attach() function */
-void setupServos() {
+void initialiseServos() {
     doorServoL.setPeriodHertz(50); // PWM frequency for SG90
     doorServoR.setPeriodHertz(50); 
     doorServoL.attach(Servo1_PWM1A, 500, 2400); // Minimum and maximum pulse width (in µs) 
