@@ -1,4 +1,4 @@
-// Last update: 2024-09-14
+// Last update: 2024-09-17
 // BR09 EAC Code: Comms_4
 
 #ifndef EAC_MOTORCONTROL_H
@@ -14,9 +14,8 @@
 
 // Function Declarations
 void initialiseMotors();
-void spinMotor();
 void changeTargetSpeed(int mStatus);
-void updateCurrentSpeed();
+void updateCurrentSpeed(int mStatus);
 
 
 #endif // EAC_MOTORCONTROL_H

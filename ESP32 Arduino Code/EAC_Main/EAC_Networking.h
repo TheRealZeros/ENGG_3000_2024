@@ -35,6 +35,7 @@ void initialiseWifi();
 void initialiseUDP();
 void firstUDPmsg();
 void readJson();
+void setJsonVariables();
 void checkMsgForSend(const char msg[]);
 
 #endif // EAC_NETWORKING_H

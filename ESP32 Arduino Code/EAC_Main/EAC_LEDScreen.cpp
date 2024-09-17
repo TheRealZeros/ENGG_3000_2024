@@ -14,8 +14,8 @@ void initialiseLCD() {
 
 void printLCD() {
   lcd.setCursor(5, 0);
-  lcd.print(messageStatic.c_str());
-  scrollText(1, messageToScroll, 250, lcdColumns);
+  lcd.print(LCDmessageStatic.c_str());
+  scrollText(1, LCDmessageToScroll, 250, lcdColumns);
 }
 
 void scrollText(int row, std::string message, int delayTime, int lcdColumns) {

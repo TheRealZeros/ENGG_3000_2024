@@ -16,7 +16,7 @@ ESPadd = ''
 MCPQ = queue.Queue()
 ESPQ = queue.Queue()
 
-ESPdict = {"speed": 50, "doors": 1}
+ESPdict = {"speed": 50, "doors": 1, "message": ""}
 
 def MCPread():
     while True:

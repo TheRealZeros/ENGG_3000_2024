@@ -25,8 +25,8 @@ extern unsigned long currentTime;
 extern unsigned long deltaTime;
 
 // LCD Variables
-extern std::string messageStatic;
-extern std::string messageToScroll;
+extern std::string LCDmessageStatic;
+extern std::string LCDmessageToScroll;
 
 // Functions
 void getDeltaTime();

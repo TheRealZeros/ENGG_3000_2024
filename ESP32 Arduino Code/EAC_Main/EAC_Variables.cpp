@@ -22,8 +22,8 @@ unsigned long oldTime = 0;
 unsigned long deltaTime = 0;
 
 // LCD Variables
-std::string messageStatic = "Central";
-std::string messageToScroll = "Stopping at A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P";
+std::string LCDmessageStatic = "Central";
+std::string LCDmessageToScroll = "Stopping at A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P";
 
 /* This function will get an approximate time difference in comparissson of the rest of the time / micros function */
 void getDeltaTime() {

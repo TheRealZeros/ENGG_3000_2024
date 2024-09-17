@@ -58,16 +58,18 @@ void readJson() {
         Serial.println(currentSpeed);
         deserializeJson(json, readBuffer);
 
-        targetSpeed = json["speed"].as<float>();
-        targetDoorStatus = json["door"].as<bool>();
-        strncpy(ccpMessage, json["message"].as<const char*>(), sizeof(ccpMessage) - 1);
-        ccpMessage[sizeof(ccpMessage) - 1] = '\0'; // Ensure null-termination
-
         const char* buffer = "EAC has Received the JSON!";
         udp.beginPacket(udpAdd, udpPort);
         udp.write((const uint8_t*)buffer, strlen(buffer));
         udp.endPacket();
     }
+}
+
+void setJsonVariables() {
+        targetSpeed = json["speed"].as<float>();
+        targetDoorStatus = json["door"].as<bool>();
+        strncpy(ccpMessage, json["message"].as<const char*>(), sizeof(ccpMessage) - 1);
+        ccpMessage[sizeof(ccpMessage) - 1] = '\0'; // Ensure null-termination
 }
 
 /* The following function will check the message that the EAC receives from the CCP and delegate them to the variables read by the EAC */

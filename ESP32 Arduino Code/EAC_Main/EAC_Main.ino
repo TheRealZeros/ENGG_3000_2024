@@ -1,4 +1,4 @@
-// Last update: 2024-09-14
+// Last update: 2024-09-17
 // BR09 EAC Code: Comms_4
 
 // External Libraries
@@ -46,19 +46,15 @@ void loop() {
 
   // Read the JSON message from the CCP
   readJson();
+
+  // Sets the Variables depeading on the JSON that was read
+  setJsonVariables();
+
+  // checks the message sent by ccp
   checkMsgForSend(ccpMessage);
 
-  // Spin the motor & update depending on variables
-  spinMotor();
-
-  // Update the direction of the motor
-  updateDirection();
-
-  // Change the target speed of the motor
-  changeTargetSpeed(motorStatus);
-
   // Update the motors speed
-  updateCurrentSpeed();
+  updateCurrentSpeed(motorStatus);
 
   // print LCD Components
   printLCD();

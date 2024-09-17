@@ -1,4 +1,4 @@
-// Last update: 2024-09-14
+// Last update: 2024-09-17
 // BR09 EAC Code: Comms_4
 
 #include "EAC_MotorControl.h"
@@ -9,12 +9,6 @@ void initialiseMotors() {
   pinMode(MotorPinA, OUTPUT);
   pinMode(MotorPinB, OUTPUT);
   pinMode(MotorPinP, OUTPUT);
-}
-
-/* The following function will spin the motor from A and B awaiting P*/
-void spinMotor() {
-  digitalWrite(MotorPinA, HIGH);
-  digitalWrite(MotorPinB, LOW);
 }
 
 /* The following function checks motor status */
@@ -35,6 +29,8 @@ void changeTargetDirection(int mStatus) {
 
 /* The following function will update the motor speed depending on the current speed in tangent with the target speed, using the acceleration as the baseline */
 void updateCurrentSpeed(int mStatus) {
+
+  changeTargetDirection(mStatus);  
 
   while(currentSpeed != targetSpeed) {
     if(currentSpeed < targetSpeed) {
