@@ -62,12 +62,15 @@ while(True):
     x = input("to ESP")
     y = x.split()
     print(y)
-    if len(y) == 2: ## Verify that input is valid
+    if len(y) == 3: ## Verify that input is valid
         if y[0] == "speed":
             ESPdict["speed"] = int(y[1])
 
         if y[0] == "doors":
             ESPdict["doors"] = int(y[1])
+
+        if y[0] == "message":
+            ESPdict["message"] = y[1]
 
     ESPQ.put(ESPdict)
     ESPQ.task_done()
