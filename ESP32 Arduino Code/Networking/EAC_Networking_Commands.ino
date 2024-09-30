@@ -5,18 +5,25 @@
 class EAC_Networking_Commands
 {
 
-    void ccpForward()
+    void ccpForward(String action)
     {
-        Serial.println("Moving forward...");
-        speed = 32;
-        mStatus = 1;
-        dStatus = 0;
+        if(action = "Slow") {
+            Serial.println("Moving forward Slow...");
+            targetSpeed = 25;
+            mStatus = 1;
+            dStatus = 0;
+        } else if(action = "Fast") {
+            Serial.println("Moving forward...");
+            targetSpeed = 75;
+            mStatus = 1;
+            dStatus = 0;
+        }
     }
 
     void ccpBackward()
     {
         Serial.println("Moving backward...");
-        speed = -22;
+        targetSpeed = -25;
         mStatus = 1;
         dStatus = 0;
     }
@@ -24,7 +31,7 @@ class EAC_Networking_Commands
     void ccpStop()
     {
         Serial.println("Stopping...");
-        speed = 0;
+        targetSpeed = 0;
         mStatus = 0;
         dStatus = 0;
     }
@@ -32,7 +39,7 @@ class EAC_Networking_Commands
     void ccpEmergencyStop()
     {
         Serial.println("Emergency Stop!");
-        speed = 0;
+        targetSpeed = 0;
         mStatus = 0;
         dStatus = 0;
     }
@@ -41,6 +48,11 @@ class EAC_Networking_Commands
     {
         Serial.println("Opening door...");
         dStatus = 1;
+
+        if(error) {
+            Serial.println("Error: Cannot open door");
+            dStatus = 2;
+        }
     }
 
     void ccpCloseDoor()
@@ -56,13 +68,17 @@ class EAC_Networking_Commands
 
     void eacStat()
     {
-        Serial.println("Retrieving EAC status...");
-        // This function might involve collecting current status data from EAC
-        String jsonString;
-        if (serialiseJSON(jsonString, "EAC", "Status", speed, "Closed", "On"))
-        {
-            // Send jsonString over the network
-            sendData(jsonString);
-        }
+        Serial.println("EAC Status:");
+        Serial.printf("Motor Status: %d\n", mStatus);
+        Serial.printf("Door Status: %d\n", dStatus);
+        Serial.printf("Current Speed: %d\n", currentSpeed);
+        Serial.printf("Target Speed: %d\n", targetSpeed);
+        
+
+        StaticJsonDocument<1024> jsonDoc;
+        jsonDoc["Motor Status"] = mStatus;
+        jsonDoc["Door Status"] = dStatus;
+        jsonDoc["Current Speed"] = currentSpeed;
+        jsonDoc["Target Speed"] = targetSpeed;
     }
 }

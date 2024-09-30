@@ -1,30 +1,46 @@
-#include <WiFiClient.h>
+#include <WiFi.h>
+#include <WiFiUDP.h>
+#include <Serial.h>
 #include <ArduinoJson.h>
-class EAC_Networking_Control
-{
+
+class EAC_Networking_Control {
 private:
-    String ipAddress;
-    int ccpPort;
-    WiFiClient client;
-    File receivedJSON;
-    File JSONToSend;
+    // WiFi Credentials
+    const char* ssid = "EAC-Network";
+    const char* password = "HolyMoly";
+    
+    // UDP Settings
+    WiFiUDP udp;
+    unsigned int localUdpPort = 4210;
+    char incomingPacket[255];
+    char packetBuffer[255];
+    char replyPacket[1024];
+
+    // JSON 
+    StaticJsonDocument<1024> doc;
 
 public:
-    // Constructor
-    EAC_Networking_Control(String ip, int port) : ipAddress(ip), ccpPort(port)
-    {
-        ipAddress = "10.20.30.109";
-        ccpPort = 3009;
+
+    void setup() {
+        Serial.begin(115200);
+        connectToWiFi(ssid, password);
+        startUDP(localUdpPort);
     }
 
-    void setup()
-    {
-        Serial.begin(9600);
-        if (WiFi.begin() != WL_CONNECTED)
-        {
+    void loop() {
+        checkUDPPacket();
+    }
+
+    void startUDP(unsigned int port) {
+        udp.begin(port);
+        Serial.printf("UDP server started at port %d\n", localUdpPort);
+    }
+
+    void connectToWiFi(string ssid, string password) {
+        WiFi.begin(ssid, password);
+        if (WiFi.begin() != WL_CONNECTED) {
             Serial.println("Connecting to WiFi...");
-            while (WiFi.status() != WL_CONNECTED)
-            {
+            while (WiFi.status() != WL_CONNECTED) {
                 delay(1000);
                 Serial.print(".");
             }
@@ -32,101 +48,26 @@ public:
         }
     }
 
-    void loop()
-    {
-        if (client.connected())
-        {
-            sendData();
-            receiveJSON();
-        }
-    }
-
-    void connectToCCP()
-    {
-        if (!client.connect(ipAddress.c_str(), ccpPort))
-        {
-            Serial.println("Connection to CCP failed");
-        }
-        else
-        {
-            Serial.println("Connected to CCP");
-        }
-    }
-
-    void sendData()
-    {
-        if (client.connected())
-        {
-            String jsonString;
-            if (serialiseJSON(jsonString))
-            {
-                client.print(jsonString);
-                Serial.println("Data sent: " + jsonString);
+    void checkUDPPacket() {
+        int packetSize = udp.parsePacket();
+        if (packetSize) {
+            // Read the incoming packet into the buffer
+            int len = udp.read(incomingPacket, 1024);
+            if (len > 0) {
+                incomingPacket[len] = 0; // Null-terminate the string
             }
-            else
-            {
-                Serial.println("Failed to serialize JSON");
-            }
-        }
-        else
-        {
-            Serial.println("Client not connected, cannot send data");
+            Serial.printf("Received packet of size %d\n", packetSize);
+            Serial.printf("From %s, port %d\n", udp.remoteIP().toString().c_str(), udp.remotePort());
+            Serial.printf("Message: %s\n", incomingPacket);
         }
     }
 
-    // void createJSON()
-    // {
-    // }
-    bool serialiseJSON(String &jsonString, String clientType, String message, int speed, String dStatus, String mStatus)
-    {
-        JsonDocument doc;
-
-        doc["client_type"] = clientType;
-        doc["message"] = message;
-        doc["speed"] = speed;
-        doc["dStatus"] = dStatus;
-        doc["mStatus"] = mStatus;
-
-        if (serializeJson(doc, jsonString) == 0)
-        {
-            return false; // Serialization failed
-        }
-        return true; // Successfully serialized
-    }
-
-    void deserialiseJSON(String jsonString)
-    {
-        JsonDocument doc;
-        DeserializationError error = deserializeJson(doc, jsonString);
-
-        if (error)
-        {
-            Serial.print(F("Failed to read JSON: "));
+    void parseJSON(StaticJsonDocument doc) {
+        DeserializationError error = deserializeJson(doc, incomingPacket);
+        if (error) {
+            Serial.print(F("Couldn't parse JSON: :( "));
             Serial.println(error.f_str());
-            return;
-        }
-
-        const char *clientType = doc["client_type"];
-        const char *message = doc["message"];
-        int speed = doc["speed"];
-        const char *dStatus = doc["dStatus"];
-        const char *mStatus = doc["mStatus"];
-
-        // Print the received values unnecessary
-        Serial.println("Received JSON:");
-        Serial.println("client_type: " + String(clientType));
-        Serial.println("message: " + String(message));
-        Serial.println("speed: " + String(speed));
-        Serial.println("dStatus: " + String(dStatus));
-        Serial.println("mStatus: " + String(mStatus));
-    }
-
-    void receiveJSON()
-    {
-        if (client.available())
-        {
-            String jsonString = client.readStringUntil('\n');
-            deserialiseJSON(jsonString);
+        return;
         }
     }
 }
