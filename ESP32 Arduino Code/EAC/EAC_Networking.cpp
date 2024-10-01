@@ -9,20 +9,48 @@ char* udpAdd = "10.20.30.176";
 
 // MSG Variables
 char readBuffer[255];
-char ccpMessage[] = "";
-char eacMessage[] = "";
+char ccpMessage[256];
+char eacMessage[256];
 
 // Functions
+const char* wifiStatusToString(wl_status_t status) { 
+    switch (status) {
+        case WL_IDLE_STATUS:     return "Idle";
+        case WL_NO_SSID_AVAIL:   return "SSID Not Available";
+        case WL_SCAN_COMPLETED:  return "Scan Completed";
+        case WL_CONNECTED:       return "Connected";
+        case WL_CONNECT_FAILED:  return "Connection Failed";
+        case WL_CONNECTION_LOST: return "Connection Lost";
+        case WL_DISCONNECTED:    return "Disconnected";
+        default:                 return "Unknown";
+    }
+}
 
 /* The following function will start the WiFi as required */
 void initialiseWifi() {
-    Serial.begin(115200);
+    Serial.println();
+    Serial.println("Initializing Wi-Fi...");
     WiFi.begin(ssid, pass);
-    while(WiFi.status() != WL_CONNECTED) {
+    Serial.print("Connecting to Wi-Fi network: ");
+    Serial.println(ssid);
+
+    unsigned long startAttemptTime = millis();
+    const unsigned long timeout = 20000; // 20 seconds timeout
+
+    while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < timeout) {
         delay(1000);
-        Serial.print(".");
+        Serial.print("Attempting to connect... Status: ");
+        Serial.println(wifiStatusToString(WiFi.status()));
     }
-    Serial.println(WiFi.localIP());
+
+    if (WiFi.status() == WL_CONNECTED) {
+        Serial.println("Connected to Wi-Fi network.");
+        Serial.print("IP address: ");
+        Serial.println(WiFi.localIP());
+    } else {
+        Serial.println("Failed to connect to Wi-Fi network.");
+        Serial.println("IP address: 0.0.0.0");
+    }
 }
 
 /* The following function will start the UDP as required */
@@ -39,8 +67,8 @@ void firstUDPmsg() {
         udp.write((const uint8_t*)firstBuffer, strlen(firstBuffer));
     udp.endPacket();
     
-    eacMessage = firstBuffer;
-    Serial.println("First UDP message '" + firstBuffer + "' sent");
+    strcpy(eacMessage, firstBuffer);
+    Serial.println("First UDP message '" + String(firstBuffer) + "' sent");
 }
 
 void readUDPmsg() {
@@ -49,8 +77,8 @@ void readUDPmsg() {
         int size = udp.read(readBuffer, packetSize);
         readBuffer[size] = '\0';
 
-        ccpMessage = readBuffer;
-        Serial.println("CCP message " + readBuffer + " received");
+        strcpy(ccpMessage, readBuffer);
+        Serial.println("CCP message " + String(readBuffer) + " received");
     }
 }
 
@@ -59,6 +87,17 @@ void sendUDPmsg(const char msg[]) {
         udp.write((const uint8_t*)msg, strlen(msg));
     udp.endPacket();
 
-    eacMessage = msg;
-    Serial.println("UDP message '" + msg + "' sent");
+    strcpy(eacMessage, msg);
+    Serial.println("UDP message '" + String(msg) + "' sent");
+}
+
+void showLastmsg(const char type[]) {
+  if(type == "EAC") {
+    Serial.println(eacMessage);
+  }
+  if(type == "CCP") {
+    Serial.println(ccpMessage);
+  } else {
+    Serial.println("Choose CCP or EAC");
+  }
 }

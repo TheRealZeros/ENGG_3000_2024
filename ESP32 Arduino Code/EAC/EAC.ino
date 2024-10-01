@@ -1,23 +1,32 @@
 #include "EAC_Networking.h"
 
 void setup() {
+    Serial.begin(115200);
     initialiseWifi();
     Serial.println("Wifi has started");
+    
     delay(1000);
     initialiseUDP();
     Serial.println("UDP has started");
-    delay(3000);
+    
+    delay(5000);
 }
 
 void loop() {
-    
     readUDPmsg();
 
-    delay(1000);
-    if(ccpMessage == "CCP Says Hello World!") {
-        sendUDPmsg("OKAY");
+    if(ccpMessage == "") {
+      sendUDPmsg("ACK? (Do 'HELLO WORLD!')");
     }
-    else {
-        sendUDPmsg("NOPE");
+
+    if(ccpMessage == "HELLO WORLD!") {
+        delay(1000);
+        sendUDPmsg("OKAY HELLO!");
+    } else {
+        delay(5000);
+        Serial.print(".");
     }
+
+    sendUDPmsg("OKAY HELLO!");
+    
 }

@@ -35,7 +35,6 @@ void setup() {
 
   // Initialises the LCD
   initialiseLCD();
-  Serial.println("EAC Setup has finished");
 
 }
 

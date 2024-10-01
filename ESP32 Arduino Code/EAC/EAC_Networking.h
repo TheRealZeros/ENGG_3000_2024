@@ -7,9 +7,6 @@
 #include <WiFiUdp.h>
 #include <stdlib.h>
 
-// Internal Libraries
-#include "EAC_Variables.h"
-
 // Network Variables
 extern WiFiUDP udp;
 extern char ssid[];
@@ -24,10 +21,12 @@ extern char ccpMessage[];
 extern char eacMessage[];
 
 // Function Prototypes
+const char* wifiStatusToString(wl_status_t status);
 void initialiseWifi();
 void initialiseUDP();
 void firstUDPmsg();
 void readUDPmsg();
 void sendUDPmsg(const char msg[]);
+void showLastmsg(const char type[]);
 
 #endif // EAC_NETWORKING_H
