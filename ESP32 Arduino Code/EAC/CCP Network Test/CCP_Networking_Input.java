@@ -1,7 +1,10 @@
+// External Libraries
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Scanner;
+
+// Internal Libraries
 
 public class CCP_Networking_Input extends Thread {
 
