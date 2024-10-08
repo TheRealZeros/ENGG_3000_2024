@@ -1,4 +1,4 @@
-// Last update: 2024-09-17
+// Last update: 2024-10-8
 // BR09 EAC Code: Comms_4
 
 // External Libraries
@@ -36,12 +36,21 @@ void setup() {
   // Initialises the LCD
   initialiseLCD();
 
+  // Initialise Sensors
+  initialiseSensors();
+
+  // Initialise LEDs
+  initialiseLED();
+
 }
 
 ///////////////////////////////////////// ESP32 Loop /////////////////////////////////////////
 void loop() {
   // Get the most approximate time from micros()  
   getDeltaTime();
+
+  // read Sensors
+  readSensors();
 
   // Read the JSON message from the CCP
   readJson();
@@ -57,6 +66,21 @@ void loop() {
 
   // print LCD Components
   printLCD();
+
+  //update LEDs based on sensor readings (for testing)
+  if(distance2 > 20) {
+    setGLED(true);
+    setRLED(false);
+    setYLED(false);
+  } else if(distance2 > 10) {
+    setYLED(true);
+    setRLED(false);
+    setGLED(false);
+  } else {
+    setRLED(true);
+    setGLED(false);
+    setYLED(false);
+  }
 
   // Update the doors
   updateDoors(targetDoorStatus);

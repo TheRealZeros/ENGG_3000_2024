@@ -1,4 +1,4 @@
-// Last update: 2024-09-14
+// Last update: 2024-10-8
 // BR09 EAC Code: Comms_4
 
 #include "EAC_Variables.h"
@@ -24,6 +24,10 @@ unsigned long deltaTime = 0;
 // LCD Variables
 std::string LCDmessageStatic = "Central";
 std::string LCDmessageToScroll = "Stopping at A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P";
+
+// Sensor Variables
+extern long distance1 = 0;
+extern long distance2 = 0;
 
 /* This function will get an approximate time difference in comparissson of the rest of the time / micros function */
 void getDeltaTime() {

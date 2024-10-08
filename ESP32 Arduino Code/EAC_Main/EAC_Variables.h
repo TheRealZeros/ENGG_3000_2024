@@ -1,4 +1,4 @@
-// Last update: 2024-09-14
+// Last update: 2024-10-8
 // BR09 EAC Code: Comms_4
 
 #ifndef EAC_VARIABLES_H
@@ -27,6 +27,10 @@ extern unsigned long deltaTime;
 // LCD Variables
 extern std::string LCDmessageStatic;
 extern std::string LCDmessageToScroll;
+
+// Sensor Variables
+extern long distance1;
+extern long distance2;
 
 // Functions
 void getDeltaTime();
