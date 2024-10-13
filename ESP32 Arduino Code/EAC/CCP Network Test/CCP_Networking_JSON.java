@@ -3,10 +3,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Scanner;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 // Internal Libraries
-import CCP_Variables;
+import src.CCP_Variables;
 
 public class CCP_Networking_JSON extends Thread {
 
@@ -50,16 +51,17 @@ public class CCP_Networking_JSON extends Thread {
                         receivedData = new byte[1024];
                         
                         // Convert the received message into a temp JSON Object
-                        JSONDocument tempJSON = new JSONObject(receivedMessage);
+                        JSONParser parser = new JSONParser();
+                        JSONObject tempJSON = (JSONObject) parser.parse(receivedMessage);
 
                         // Sets the tempJSON objects into each of the eacJSON objects
-                        CCP_Variables.eacMessage.put("Type", tempJSON.getString("Type"));   
-                        CCP_Variables.eacMessage.put("currentSpeed", tempJSON.getString("currentSpeed"));
-                        CCP_Variables.eacMessage.put("dStatus", tempJSON.getString("dStatus"));
-                        CCP_Variables.eacMessage.put("mStatus", tempJSON.getString("mStatus"));
+                        CCP_Variables.eacMessage.put("Type", tempJSON.get("Type"));   
+                        CCP_Variables.eacMessage.put("currentSpeed", tempJSON.get("currentSpeed"));
+                        CCP_Variables.eacMessage.put("dStatus", tempJSON.get("dStatus"));
+                        CCP_Variables.eacMessage.put("mStatus", tempJSON.get("mStatus"));
 
                         // Ignore UDP Packets sent from CCP
-                        if(!tempJSON.getString("Type").equals("CCP")) {
+                        if(!tempJSON.get("Type").equals("CCP")) {
                             // Prints the eacMessage
                             System.out.println("Rececived From EAC: ");
                             System.out.println(CCP_Variables.eacMessage);
@@ -70,8 +72,7 @@ public class CCP_Networking_JSON extends Thread {
                             receivedMessage = "";
                         }
                     }
-                } 
-                catch (Exception e) {
+                } catch (Exception e) {
                     if (running && !socket.isClosed()) {
                         e.printStackTrace();  
                     }
@@ -134,27 +135,11 @@ public class CCP_Networking_JSON extends Thread {
 
                                 // Function to send data on the socket
                                 socket.send(sendingPacket);
-
-                             // Sets the sending message as the cmdLineInputMessage
-                             String sendingMessage = CCP_Variables.ccpMessage.toString();
- 
-                             // Sets the data to send in bytese
-                             byte[] sendData = sendingMessage.getBytes();
- 
-                             // Set IP Address to send packets to
-                             InetAddress IPAddress = InetAddress.getByName(address);
- 
-                             // Create packet to send data
-                             DatagramPacket sendingPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
- 
-                             // Function to send data on the socket
-                             socket.send(sendingPacket);
                         
                             // Prints the message being sent
 
-                            if(!cmdLineInputMessage.equals("LMS") || !cmdLineInputMessage.equals("LMR")) {
-                                System.out.println("============");
-                                System.out.println("Message sent");
+                            if(!sendingMessage.equals("LMS") && !sendingMessage.equals("LMR")) {
+                                System.out.println("--- Message sent");
                                 System.out.println("============");
                             } else {
                                 System.out.println("============");
