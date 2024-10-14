@@ -27,10 +27,10 @@ public class CCP_Variables {
     // RECEVING
     public static volatile JSONObject eacMessageCCP = new JSONObject();
     static {
-        eacMessage.put("Type", "");
-        eacMessage.put("currentSpeed",  "");
-        eacMessage.put("dStatus", "");
-        eacMessage.put("mStatus",  "");
+        eacMessageCCP.put("Type", "");
+        eacMessageCCP.put("currentSpeed",  "");
+        eacMessageCCP.put("dStatus", "");
+        eacMessageCCP.put("mStatus",  "");
     }    
         
 
@@ -47,11 +47,11 @@ public class CCP_Variables {
     // SENDING
     public static volatile JSONObject ccpMessageEAC = new JSONObject();
     static {
-        ccpMessage.put("Type", "CCP");
-        ccpMessage.put("Message", "");
-        ccpMessage.put("targetSpeed", null);
-        ccpMessage.put("targetDoorStatus", null);
-        ccpMessage.put("targetMotorStatus", null);
+        ccpMessageEAC.put("Type", "CCP");
+        ccpMessageEAC.put("Message", "");
+        ccpMessageEAC.put("targetSpeed", null);
+        ccpMessageEAC.put("targetDoorStatus", null);
+        ccpMessageEAC.put("targetMotorStatus", null);
     }
 
         /* {
@@ -66,8 +66,8 @@ public class CCP_Variables {
     //SENDING
     public static volatile JSONObject eacStatMessage = new JSONObject();
     static {
-        statMessage.put("Type", "CCP");
-        statMessage.put("Message", "STAT");
+        eacStatMessage.put("Type", "CCP");
+        eacStatMessage.put("Message", "STAT");
     }
     
         
@@ -80,37 +80,39 @@ public class CCP_Variables {
     // RECEVING
     public static volatile JSONObject mcpMessageCCP = new JSONObject();
     static {
-        mcpMessage.put("Type", "");
-        mcpMessage.put("Message", "");
-        mcpMessage.put("targetSpeed", "");
-        mcpMessage.put("targetDoorStatus", "");
-        mcpMessage.put("targetMotorStatus", "");
+        mcpMessageCCP.put("client_type", "");
+        mcpMessageCCP.put("message", "");
+        mcpMessageCCP.put("client_id", "");
+        mcpMessageCCP.put("action", "");
+        mcpMessageCCP.put("status", "");
+        mcpMessageCCP.put("br_id", "")
     }
 
     // SENDING
     public static volatile JSONObject ccpMessageMCP = new JSONObject();
     static {
-        mcpMessage.put("Type", "");
-        mcpMessage.put("Message", "");
-        mcpMessage.put("targetSpeed", "");
-        mcpMessage.put("targetDoorStatus", "");
-        mcpMessage.put("targetMotorStatus", "");
+        mcpMessageCCP.put("client_type", "");
+        mcpMessageCCP.put("message", "");
+        mcpMessageCCP.put("client_id", "");
+        mcpMessageCCP.put("action", "");
+        mcpMessageCCP.put("status", "");
+        mcpMessageCCP.put("br_id", "")
     }
 
 ////////////// VARIBLE METHODS //////////////
 
             // Method to update the low level variables
             public void updateLowLevelValues() {
-                lowLevelCarrageSpeed = Integer.parseInt((String) eacMessage.get("currentSpeed"));
-                lowLevelDoorStatus = Integer.parseInt((String) eacMessage.get("dStatus"));
-                lowLevelMotorStatus = Integer.parseInt((String) eacMessage.get("mStatus"));
+                lowLevelCarrageSpeed = Integer.parseInt((String) eacMessageCCP.get("currentSpeed"));
+                lowLevelDoorStatus = Integer.parseInt((String) eacMessageCCP.get("dStatus"));
+                lowLevelMotorStatus = Integer.parseInt((String) eacMessageCCP.get("mStatus"));
             }
 
             // Method to update ccpMessage with instance values
             public void updateCCPMessage() {
-                ccpMessage.put("targetSpeed", carrageSpeed);
-                ccpMessage.put("targetDoorStatus", doorStatus);
-                ccpMessage.put("targetMotorStatus", motorStatus);
+                ccpMessageEAC.put("targetSpeed", carrageSpeed);
+                ccpMessageEAC.put("targetDoorStatus", doorStatus);
+                ccpMessageEAC.put("targetMotorStatus", motorStatus);
             }
 
 

@@ -1,7 +1,6 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketTimeoutException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -77,8 +76,6 @@ public class CCP_Networking_JSON {
                 while (running && !socket.isClosed()) {
                     receivingPacket(CCP_Variables.eacMessageCCP, receivedData);
                 }
-            } catch (SocketTimeoutException e) {
-                LOGGER.warning("Socket timed out while receiving EAC packets.");
             } catch (Exception e) {
                 if (running && !socket.isClosed()) {
                     LOGGER.log(Level.SEVERE, "Error receiving EAC packets", e);
@@ -96,8 +93,6 @@ public class CCP_Networking_JSON {
                 while (running && !socket.isClosed()) {
                     receivingPacket(CCP_Variables.mcpMessageCCP, receivedData);
                 }
-            } catch (SocketTimeoutException e) {
-                LOGGER.warning("Socket timed out while receiving MCP packets.");
             } catch (Exception e) {
                 if (running && !socket.isClosed()) {
                     LOGGER.log(Level.SEVERE, "Error receiving MCP packets", e);
