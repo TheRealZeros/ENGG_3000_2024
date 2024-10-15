@@ -19,6 +19,6 @@ extern Servo doorServoL;
 extern Servo doorServoR;
 
 void initialiseServos();
-void updateDoors(bool doorStatus);
+void updateDoors(int doorStatus);
 
 #endif // EAC_SERVOCONTROL_H

@@ -16,6 +16,8 @@
 void initialiseMotors();
 void changeTargetSpeed(int mStatus);
 void updateCurrentSpeed(int mStatus);
+void emergencyStop();
+void stop();
 
 
 #endif // EAC_MOTORCONTROL_H

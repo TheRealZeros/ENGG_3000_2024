@@ -10,8 +10,8 @@ double currentSpeed = 0;    // WHAT IT ACTUALLY IS GOING
 
 // Status Variables
 // Door
-bool targetDoorStatus = false;  // WHAT WE WANT IT TO BE
-bool currentDoorStatus = false; // WHAT IT ACTUALLY IS
+int targetDoorStatus = 0;  // WHAT WE WANT IT TO BE
+int currentDoorStatus = 0; // WHAT IT ACTUALLY IS
 
 // Motor
 int motorStatus = 0; 

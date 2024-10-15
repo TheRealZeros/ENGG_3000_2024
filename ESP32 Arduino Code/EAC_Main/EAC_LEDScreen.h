@@ -16,6 +16,9 @@
 // LCD Variables
 extern int lcdColumns;
 extern int lcdRows;
+extern int pos;
+extern int realTime;
+extern std::string scrollingString;
 
 // Function Declarations
 void initialiseLCD();

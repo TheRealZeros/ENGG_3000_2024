@@ -5,9 +5,9 @@
 #define EAC_LEDCONTROL_H
 #include "EAC_Variables.h"
 
-#define Rpin 32
-#define Ypin 33
-#define Gpin 25
+#define pinR 32
+#define pinY 33
+#define pinG 25
 
 void initialiseLED();
 void setRLED(bool input);

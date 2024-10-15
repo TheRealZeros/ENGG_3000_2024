@@ -12,18 +12,19 @@ void initialiseSensors() {
   pinMode(trigPin2, OUTPUT);
   pinMode(echoPin2, INPUT);
 }
+
 void readSensors() {
   digitalWrite(trigPin1, LOW);
   digitalWrite(trigPin2, LOW);
-  delayMicrosecond(2);
+  delayMicroseconds(2);
 
   digitalWrite(trigPin1, LOW);
-  delayMicrosecond(10);
+  delayMicroseconds(10);
   digitalWrite(trigPin1, HIGH);
   duration1 = pulseIn(echoPin1, HIGH);
 
   digitalWrite(trigPin2, LOW);
-  delayMicrosecond(10);
+  delayMicroseconds(10);
   digitalWrite(trigPin2, HIGH);
   duration2 = pulseIn(echoPin2, HIGH);
 

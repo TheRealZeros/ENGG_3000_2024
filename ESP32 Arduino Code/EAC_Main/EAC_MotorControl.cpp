@@ -40,5 +40,22 @@ void updateCurrentSpeed(int mStatus) {
     }
   }
   digitalWrite(MotorPinP, currentSpeed);
-  delay(200);
+}
+
+// emergency stopping! quick, reversable
+void forceStop() {
+  digitalWrite(MotorPinP, 0);
+  currentSpeed = 0;
+}
+
+// slows down normally, same as targetSpeed = 0;
+void stop() {
+  while(currentSpeed != 0) {
+    if(currentSpeed > 0) {
+      currentSpeed -= acceleration;
+    } else if (currentSpeed < 0) {
+      currentSpeed += acceleration;
+    }
+  }
+  digitalWrite(MotorPinP, currentSpeed);
 }

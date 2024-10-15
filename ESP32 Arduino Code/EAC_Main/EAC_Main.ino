@@ -10,6 +10,8 @@
 #include "EAC_ServoControl.h"
 #include "EAC_MotorControl.h"
 #include "EAC_LEDScreen.h"
+#include "EAC_SensorControl.h"
+#include "EAC_LEDControl.h"
 
 // PIN Definitions
 #define CLK_DIR 17
@@ -81,6 +83,7 @@ void loop() {
     setGLED(false);
     setYLED(false);
   }
+  Serial.printf("distance2: %d, distance1:%d\n", distance2, distance1);
 
   // Update the doors
   updateDoors(targetDoorStatus);

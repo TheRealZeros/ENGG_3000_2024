@@ -67,7 +67,7 @@ void readJson() {
 
 void setJsonVariables() {
         targetSpeed = json["speed"].as<float>();
-        targetDoorStatus = json["door"].as<bool>();
+        targetDoorStatus = json["doors"].as<int>();
         strncpy(ccpMessage, json["message"].as<const char*>(), sizeof(ccpMessage) - 1);
         ccpMessage[sizeof(ccpMessage) - 1] = '\0'; // Ensure null-termination
 }

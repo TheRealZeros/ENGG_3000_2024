@@ -14,9 +14,9 @@ extern float targetSpeed;
 extern double currentSpeed;
 
 // Status Variables
-extern bool doorStatus;
-extern bool currentDoorStatus;
-extern bool targetDoorStatus;
+extern int doorStatus;
+extern int currentDoorStatus;
+extern int targetDoorStatus;
 extern int motorStatus;
 
 // Time Variables
