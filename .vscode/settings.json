@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "Carrage Control Program\\Carrage_Control_Program\\src"
+    ],
+    "java.project.referencedLibraries": [
+        "Carrage Control Program\\Carrage_Control_Program\\lib\\json-simple-1.1.1.jar",
+        "c:\\Users\\Gabri\\OneDrive\\Macquarie University\\2024\\Session 2\\ENGG3000\\Repo\\ENGG_3000_2024\\Carrage Control Program\\Carrage_Control_Program\\lib\\json-simple-1.1.1.jar"
+    ]
+}

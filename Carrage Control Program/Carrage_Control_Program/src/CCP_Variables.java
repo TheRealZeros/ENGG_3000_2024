@@ -7,17 +7,15 @@ import Enums.*;
 public class CCP_Variables {
 
     public CCP_Variables() {
-        while(true) {
-            updateCCPMessage();
-            updateLowLevelValues();
-        }
+       
     }
     
     // Carrage Information
     String carrageID = "BR09"; // Carrage ID
     Integer carrageSpeed;      // Carrage Speed
-    D_Status doorStatus;       // Door Status
-    M_Status motorStatus;      // Motor Status
+    String message;            // Message to give
+    String doorStatus;           // Door Status
+    String motorStatus;         // Motor Status
     int lowLevelDoorStatus;    // currentDoorStatus as per EAC
     int lowLevelMotorStatus;   // currentMotorStatus as per EAC
     int lowLevelCarrageSpeed;  // currentSpeed as per EAC
@@ -25,21 +23,22 @@ public class CCP_Variables {
 
     // Networking information
     // RECEVING
-    public static volatile JSONObject eacMessageCCP = new JSONObject();
-    static {
-        eacMessageCCP.put("Type", "");
-        eacMessageCCP.put("currentSpeed",  "");
-        eacMessageCCP.put("dStatus", "");
-        eacMessageCCP.put("mStatus",  "");
+    public volatile JSONObject eacMessageCCP = new JSONObject();
+
+    public void getEacJSON() {
+        eacMessageCCP.put("client_type", "");
+        eacMessageCCP.put("currentSpeed",  "0");
+        eacMessageCCP.put("dStatus", "0");
+        eacMessageCCP.put("mStatus",  "0");
     }    
         
 
         /* {
-         * "Type": "",
-         * "currentSpeed": "",
-         * "currentDoorStatus": "",
-         * "dStatus": "",
-         * "mStatus": ""
+         * "Type": "EAC",
+         * "currentSpeed": "10",
+         * "currentDoorStatus": "1",
+         * "dStatus": "1",
+         * "mStatus": "0"
          * }
         */
         
@@ -47,8 +46,8 @@ public class CCP_Variables {
     // SENDING
     public static volatile JSONObject ccpMessageEAC = new JSONObject();
     static {
-        ccpMessageEAC.put("Type", "CCP");
-        ccpMessageEAC.put("Message", "");
+        ccpMessageEAC.put("client_type", "CCP");
+        ccpMessageEAC.put("Message", null);
         ccpMessageEAC.put("targetSpeed", null);
         ccpMessageEAC.put("targetDoorStatus", null);
         ccpMessageEAC.put("targetMotorStatus", null);
@@ -85,7 +84,7 @@ public class CCP_Variables {
         mcpMessageCCP.put("client_id", "");
         mcpMessageCCP.put("action", "");
         mcpMessageCCP.put("status", "");
-        mcpMessageCCP.put("br_id", "")
+        mcpMessageCCP.put("br_id", "");
     }
 
     // SENDING
@@ -96,7 +95,7 @@ public class CCP_Variables {
         mcpMessageCCP.put("client_id", "");
         mcpMessageCCP.put("action", "");
         mcpMessageCCP.put("status", "");
-        mcpMessageCCP.put("br_id", "")
+        mcpMessageCCP.put("br_id", "");
     }
 
 ////////////// VARIBLE METHODS //////////////
@@ -112,7 +111,7 @@ public class CCP_Variables {
             public void updateCCPMessage() {
                 ccpMessageEAC.put("targetSpeed", carrageSpeed);
                 ccpMessageEAC.put("targetDoorStatus", doorStatus);
-                ccpMessageEAC.put("targetMotorStatus", motorStatus);
+                //ccpMessageEAC.put("targetMotorStatus", motorStatus);
             }
 
 

@@ -24,11 +24,16 @@ public class CCP_Networking_JSON {
     private int port = 3009;
 
     // Address to connect to
-    private String address = "192.168.0.167";
+    private String address = "10.20.30.176";
 
-    public CCP_Networking_JSON(int port, String address) {
+    // ccp Variables
+    private CCP_Variables ccpVariables;
+
+    public CCP_Networking_JSON(int port, String address, CCP_Variables ccpVariables) {
         this.port = port;
         this.address = address;
+        this.ccpVariables = ccpVariables;
+
         try {
             // Initialise the DatagramSocket with the specified port
             this.socket = new DatagramSocket(port);
@@ -43,15 +48,45 @@ public class CCP_Networking_JSON {
     }
 
     // Start networking threads for sending and receiving UDP packets
-    public void startNetworking() {
-
-        receiveMCP();
-        
-        sendMCP();
-        
-        receiveEAC();
-        
-        sendEAC();
+    public void startNetworking(Boolean running) {
+        while (running) {
+            // Start the networking threads for sending and receiving
+            // receiveMCP();
+            
+            // try {
+            //     Thread.sleep(1000); // 1 second delay
+            // } catch (InterruptedException e) {
+            //     Thread.currentThread().interrupt();
+            //     LOGGER.log(Level.WARNING, "Thread interrupted", e);
+            // }
+            
+            // sendMCP();
+            
+            // try {
+            //     Thread.sleep(3000); // 3 second delay
+            // } catch (InterruptedException e) {
+            //     Thread.currentThread().interrupt();
+            //     LOGGER.log(Level.WARNING, "Thread interrupted", e);
+            // }
+    
+            receiveEAC();
+            
+            try {
+                Thread.sleep(5000); // 5 second delay
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.log(Level.WARNING, "Thread interrupted", e);
+            }
+            
+            sendEAC();
+            
+            try {
+                Thread.sleep(2000); // 2 second delay
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.log(Level.WARNING, "Thread interrupted", e);
+            }
+        }
     }
 
     // Stop all networking threads and close the socket
@@ -74,7 +109,7 @@ public class CCP_Networking_JSON {
             byte[] receivedData = new byte[1024]; // Buffer for received data
             try {
                 while (running && !socket.isClosed()) {
-                    receivingPacket(CCP_Variables.eacMessageCCP, receivedData);
+                    receivingPacket(ccpVariables.eacMessageCCP, receivedData);
                 }
             } catch (Exception e) {
                 if (running && !socket.isClosed()) {
@@ -107,8 +142,10 @@ public class CCP_Networking_JSON {
         Thread eacSendingThread = new Thread(() -> {
             try {
                 while (running) {
-                    sendingPacket(CCP_Variables.ccpMessageEAC);
-                    LOGGER.info("Sending CCP Message to EAC as: " + CCP_Variables.ccpMessageEAC);
+                    ccpVariables.updateCCPMessage();
+                    sendingPacket(ccpVariables.ccpMessageEAC);
+                    System.out.println(ccpVariables.carrageSpeed);
+                    LOGGER.info("Sending CCP Message to EAC as: " + ccpVariables.ccpMessageEAC);
                     Thread.sleep(1000); // Add delay for network stability
                 }
             } catch (InterruptedException e) {
@@ -172,8 +209,8 @@ public class CCP_Networking_JSON {
             JSONObject tempJSON = (JSONObject) parser.parse(receivedMessage);
 
             // Update the target JSON object based on the type of message received
-            if (tempJSON.get("Type").equals("EAC")) {
-                json.put("Type", tempJSON.get("Type"));
+            if (tempJSON.get("client_type").equals("EAC")) {
+                json.put("client_type", tempJSON.get("client_type"));
                 json.put("currentSpeed", tempJSON.get("currentSpeed"));
                 json.put("dStatus", tempJSON.get("dStatus"));
                 json.put("mStatus", tempJSON.get("mStatus"));
@@ -194,21 +231,4 @@ public class CCP_Networking_JSON {
         }
     }
 
-    // Main method for testing purposes
-    public static void main(String[] args) {
-        // Create a networking instance with specified port and address
-        CCP_Networking_JSON networking = new CCP_Networking_JSON(3009, "192.168.0.167");
-        networking.startNetworking();
-
-        // Add a delay to simulate some networking activity
-        try {
-            Thread.sleep(10000); // 10 seconds
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            LOGGER.warning("Main thread interrupted.");
-        }
-
-        // Stop networking after the delay
-        networking.stopNetworking();
-    }
 }
