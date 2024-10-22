@@ -5,13 +5,18 @@ public class EAC_Variables {
     int currentDoorStatus;
     String currentMessage;
 
-    public EAC_Variables() {}
+    public EAC_Variables() {
+        client_type = "EAC";
+        currentSpeed = -1;
+        currentDoorStatus = -1;
+        currentMessage = "INI";
+    }
 
-    public String getClient_type() {
+    public String getClientType() {
         return client_type;
     }
 
-    public void setClient_type(String client_type) {
+    public void setClientType(String client_type) {
         this.client_type = client_type;
     }
 

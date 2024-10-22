@@ -1,6 +1,7 @@
 {
     "java.project.sourcePaths": [
-        "Carrage Control Program\\Carrage_Control_Program\\src"
+        "Carrage Control Program/Carrage_Control_Program/src",
+        "Carrage Control Program/Input_CCP/Input_CCP/src"
     ],
     "java.project.referencedLibraries": [
         "Carrage Control Program\\Carrage_Control_Program\\lib\\json-simple-1.1.1.jar",

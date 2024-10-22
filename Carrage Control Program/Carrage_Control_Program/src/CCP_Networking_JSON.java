@@ -51,23 +51,23 @@ public class CCP_Networking_JSON {
     public void startNetworking(Boolean running) {
         while (running) {
             // Start the networking threads for sending and receiving
-            // receiveMCP();
+            receiveMCP();
             
-            // try {
-            //     Thread.sleep(1000); // 1 second delay
-            // } catch (InterruptedException e) {
-            //     Thread.currentThread().interrupt();
-            //     LOGGER.log(Level.WARNING, "Thread interrupted", e);
-            // }
+            try {
+                Thread.sleep(1000); // 1 second delay
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.log(Level.WARNING, "Thread interrupted", e);
+            }
             
-            // sendMCP();
+            sendMCP();
             
-            // try {
-            //     Thread.sleep(3000); // 3 second delay
-            // } catch (InterruptedException e) {
-            //     Thread.currentThread().interrupt();
-            //     LOGGER.log(Level.WARNING, "Thread interrupted", e);
-            // }
+            try {
+                Thread.sleep(3000); // 3 second delay
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.log(Level.WARNING, "Thread interrupted", e);
+            }
     
             receiveEAC();
             

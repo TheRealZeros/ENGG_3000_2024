@@ -51,6 +51,7 @@ public class CCP_Variables {
         ccpMessageEAC.put("targetSpeed", null);
         ccpMessageEAC.put("targetDoorStatus", null);
         ccpMessageEAC.put("targetMotorStatus", null);
+        ccpMessageEAC.put("targetMotorStatus", null);
     }
 
         /* {

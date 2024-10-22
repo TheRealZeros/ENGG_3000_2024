@@ -5,13 +5,18 @@ public class Variables {
     int targetDoorStatus;
     String targetMessage;
 
-    public Variables() {}
+    public Variables() {
+        client_type = "CCP";
+        targetSpeed = -1;
+        targetDoorStatus = -1;
+        targetMessage = "INI";
+    }
 
-    public String getClient_type() {
+    public String getClientType() {
         return client_type;
     }
 
-    public void setClient_type(String client_type) {
+    public void setClientType(String client_type) {
         this.client_type = client_type;
     }
 
