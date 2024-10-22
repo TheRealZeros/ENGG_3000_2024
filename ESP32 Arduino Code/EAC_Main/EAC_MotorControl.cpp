@@ -33,9 +33,9 @@ void updateCurrentSpeed() {
   Serial.printf("speed before: %lf ", currentSpeed);
   while(currentSpeed != targetSpeed) {
     if(currentSpeed < targetSpeed) {
-      currentSpeed += acceleration * deltaTime / 10000;
+      currentSpeed += acceleration * deltaTime / 1000000;
     } else if(currentSpeed > targetSpeed) {
-      currentSpeed -= acceleration * deltaTime / 10000;
+      currentSpeed -= acceleration * deltaTime / 1000000;
     }
   }
   currentSpeed = targetSpeed;

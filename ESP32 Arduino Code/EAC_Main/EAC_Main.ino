@@ -83,7 +83,6 @@ void loop() {
     setGLED(false);
     setYLED(false);
   }
-  Serial.printf("distance2: %d, distance1:%d\n", distance2, distance1);
 
   // Update the doors
   updateDoors(targetDoorStatus);

@@ -17,17 +17,16 @@ void readSensors() {
   digitalWrite(trigPin1, LOW);
   digitalWrite(trigPin2, LOW);
   delayMicroseconds(2);
-
-  digitalWrite(trigPin1, LOW);
-  delayMicroseconds(10);
   digitalWrite(trigPin1, HIGH);
-  duration1 = pulseIn(echoPin1, HIGH);
-
-  digitalWrite(trigPin2, LOW);
-  delayMicroseconds(10);
   digitalWrite(trigPin2, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin1, LOW);
+  digitalWrite(trigPin2, LOW);
+  duration1 = pulseIn(echoPin1, HIGH);
   duration2 = pulseIn(echoPin2, HIGH);
 
   distance1 = speed / 10000 * duration1 / 2;
   distance2 = speed / 10000 * duration2 / 2;
+  Serial.printf("duration1: %ld, duration2: %ld\n", duration1, duration2);
+  Serial.printf("distance2: %ld, distance1: %ld\n", distance2, distance1);
 }
