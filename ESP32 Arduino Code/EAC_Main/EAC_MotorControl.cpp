@@ -31,22 +31,24 @@ void changeTargetDirection(int mStatus) {
 /* The following function will update the motor speed depending on the current speed in tangent with the target speed, using the acceleration as the baseline */
 void updateCurrentSpeed() { 
   Serial.printf("speed before: %lf ", currentSpeed);
-  // while(currentSpeed != targetSpeed) {
-  //   if(currentSpeed < targetSpeed) {
-  //     currentSpeed += acceleration;
-  //   } else if(currentSpeed > targetSpeed) {
-  //     currentSpeed -= acceleration;
-  //   }
-  // }
+  while(currentSpeed != targetSpeed) {
+    if(currentSpeed < targetSpeed) {
+      currentSpeed += acceleration * deltaTime / 10000;
+    } else if(currentSpeed > targetSpeed) {
+      currentSpeed -= acceleration * deltaTime / 10000;
+    }
+  }
   currentSpeed = targetSpeed;
   Serial.printf("speed after: %lf\n", currentSpeed);
   Serial.printf("targetSpeed: %lf\n", targetSpeed);
-  digitalWrite(MotorPinP, currentSpeed);
+  analogWrite(MotorPinP, abs(currentSpeed));
 }
 
 // emergency stopping! quick, reversable
 void forceStop() {
-  digitalWrite(MotorPinP, 0);
+  analogWrite(MotorPinP, 0);
+  digitalWrite(MotorPinA, LOW);
+  digitalWrite(MotorPinB, LOW);
   currentSpeed = 0;
 }
 
