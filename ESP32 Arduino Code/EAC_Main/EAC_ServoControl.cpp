@@ -21,11 +21,11 @@ void updateDoors(int doorStatus) {
         doorServoL.writeTicks(190);
         doorServoR.writeTicks(190);
         currentDoorStatus = 1;
-        Serial.println("Door Opened");
+        //Serial.println("Door Opened");
     } else {
         doorServoL.writeTicks(0);
         doorServoR.writeTicks(0);
         currentDoorStatus = 0;
-        Serial.println("Door Closed");
+        //Serial.println("Door Closed");
     }
 }

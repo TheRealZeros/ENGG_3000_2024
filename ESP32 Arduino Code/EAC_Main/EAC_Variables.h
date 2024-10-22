@@ -10,14 +10,15 @@
 
 // Speed Variables (mm/s)
 extern float acceleration;
-extern float targetSpeed;
+extern double targetSpeed;
 extern double currentSpeed;
 
 // Status Variables
 extern int doorStatus;
 extern int currentDoorStatus;
 extern int targetDoorStatus;
-extern int motorStatus;
+extern int currentMotorStatus;
+extern int targetMotorStatus;
 
 // Time Variables
 extern unsigned long oldTime;
@@ -34,6 +35,5 @@ extern long distance2;
 
 // Functions
 void getDeltaTime();
-void updateDirection();
 
 #endif // EAC_VARIABLES_H

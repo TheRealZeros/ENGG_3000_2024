@@ -9,6 +9,8 @@ void initialiseMotors() {
   pinMode(MotorPinA, OUTPUT);
   pinMode(MotorPinB, OUTPUT);
   pinMode(MotorPinP, OUTPUT);
+  digitalWrite(MotorPinA, LOW);
+  digitalWrite(MotorPinB, HIGH);
 }
 
 /* The following function checks motor status */
@@ -24,21 +26,21 @@ void changeTargetDirection(int mStatus) {
     digitalWrite(MotorPinA, HIGH);
     digitalWrite(MotorPinB, LOW); 
   } 
-  delay(200);
 }
 
 /* The following function will update the motor speed depending on the current speed in tangent with the target speed, using the acceleration as the baseline */
-void updateCurrentSpeed(int mStatus) {
-
-  changeTargetDirection(mStatus);  
-
-  while(currentSpeed != targetSpeed) {
-    if(currentSpeed < targetSpeed) {
-      currentSpeed += acceleration;
-    } else if(currentSpeed > targetSpeed) {
-      currentSpeed -= acceleration;
-    }
-  }
+void updateCurrentSpeed() { 
+  Serial.printf("speed before: %lf ", currentSpeed);
+  // while(currentSpeed != targetSpeed) {
+  //   if(currentSpeed < targetSpeed) {
+  //     currentSpeed += acceleration;
+  //   } else if(currentSpeed > targetSpeed) {
+  //     currentSpeed -= acceleration;
+  //   }
+  // }
+  currentSpeed = targetSpeed;
+  Serial.printf("speed after: %lf\n", currentSpeed);
+  Serial.printf("targetSpeed: %lf\n", targetSpeed);
   digitalWrite(MotorPinP, currentSpeed);
 }
 

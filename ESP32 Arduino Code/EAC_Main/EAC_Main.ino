@@ -64,7 +64,7 @@ void loop() {
   checkMsgForSend(ccpMessage);
 
   // Update the motors speed
-  updateCurrentSpeed(motorStatus);
+  updateCurrentSpeed();
 
   // print LCD Components
   printLCD();

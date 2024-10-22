@@ -55,9 +55,7 @@ void readJson() {
         int size = udp.read(readBuffer, packetSize);
         readBuffer[size] = '\0'; // Null-terminate the buffer
         Serial.println(readBuffer);
-        Serial.println(currentSpeed);
         deserializeJson(json, readBuffer);
-
         const char* buffer = "EAC has Received the JSON!";
         udp.beginPacket(udpAdd, udpPort);
         udp.write((const uint8_t*)buffer, strlen(buffer));
@@ -66,9 +64,10 @@ void readJson() {
 }
 
 void setJsonVariables() {
-        targetSpeed = json["speed"].as<float>();
-        targetDoorStatus = json["doors"].as<int>();
-        strncpy(ccpMessage, json["message"].as<const char*>(), sizeof(ccpMessage) - 1);
+        targetSpeed = json["targetSpeed"].as<double>();
+        targetDoorStatus = json["targetDoorStatus"].as<int>();
+        targetMotorStatus = json["targetMotorStatus"].as<int>();
+        strncpy(ccpMessage, json["Message"].as<const char*>(), sizeof(ccpMessage) - 1);
         ccpMessage[sizeof(ccpMessage) - 1] = '\0'; // Ensure null-termination
 }
 
@@ -76,7 +75,7 @@ void setJsonVariables() {
 void checkMsgForSend(const char msg[]) {
     newJson["eacSpeed"] = currentSpeed;
     newJson["doorStatus"] = currentDoorStatus;
-    newJson["motorStatus"] = motorStatus;
+    newJson["motorStatus"] = currentMotorStatus;
     newJson["message"] = eacMessage;
 
     if(msg == "STAT") {

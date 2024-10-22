@@ -5,7 +5,7 @@
 
 // Speed Variables (mm/s)
 float acceleration = 10;
-float targetSpeed = 0;      // WHAT WE WANT IT TO GO
+double targetSpeed = 0;      // WHAT WE WANT IT TO GO
 double currentSpeed = 0;    // WHAT IT ACTUALLY IS GOING
 
 // Status Variables
@@ -14,7 +14,8 @@ int targetDoorStatus = 0;  // WHAT WE WANT IT TO BE
 int currentDoorStatus = 0; // WHAT IT ACTUALLY IS
 
 // Motor
-int motorStatus = 0; 
+int targetMotorStatus = 0;
+int currentMotorStatus = 0; 
 
 // Time Variables
 unsigned long currentTime = 0;
@@ -34,13 +35,4 @@ void getDeltaTime() {
   currentTime = micros();
   deltaTime = currentTime - oldTime;
   oldTime = currentTime;
-}
-
-void updateDirection() {
-  if(targetSpeed < 0) {
-    motorStatus = 0;
-  } else {
-    motorStatus = 1;
-  }
-  delay(200);
 }

@@ -27,18 +27,12 @@ void scrollText(int row, std::string message, int delayTime, int lcdColumns) {
     message = " " + message;  
   } 
   message = message + " "; 
-  Serial.printf("message: %s\n", message);
   realTime += deltaTime;
-  Serial.printf("realTime: %d\n", realTime);
   if(realTime > delayTime*100) {
     realTime = 0;
-    Serial.printf("message length: %d\n", message.length());
-    Serial.printf("pos: %d\n", pos);
     if(pos >= message.length()) {
       pos = 0;
-      
     }
-    Serial.printf("pos after: %d\n", pos);
     lcd.setCursor(0, row);
     lcd.print(message.substr(pos, lcdColumns).c_str());
     pos++;

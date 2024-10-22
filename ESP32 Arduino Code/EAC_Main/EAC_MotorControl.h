@@ -15,7 +15,7 @@
 // Function Declarations
 void initialiseMotors();
 void changeTargetSpeed(int mStatus);
-void updateCurrentSpeed(int mStatus);
+void updateCurrentSpeed();
 void emergencyStop();
 void stop();
 
