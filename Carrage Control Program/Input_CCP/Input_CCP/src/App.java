@@ -14,7 +14,7 @@ public class App {
        EAC_Variables EACvariables = new EAC_Variables();
 
 if (input.equals("Start")) {
-    network.startNetwork("192.168.215.193", 3009);
+    network.startNetwork("192.168.0.167", 3009);
 
     variables.setClientType("CCP");
     variables.setTargetSpeed(0);
@@ -44,12 +44,13 @@ if (input.equals("Start")) {
 
     if (!ackReceived) {
         System.out.println("Error connecting to EAC");
+        running = false;
     }
 } else if (input.equals("Exit")) {
     scanner.close();
 } else if (input.equals("Override")) {
     running = true;
-    network.startNetwork("192.168.215.193", 3009);
+    network.startNetwork("192.168.0.167", 3009);
 
     variables.setClientType("CCP");
     variables.setTargetSpeed(0);
@@ -63,9 +64,43 @@ if (input.equals("Start")) {
     network.printSendingJSON();
 
     network.sendJSON();
+} else if(input.equals("Test")) {
+    running = true;
+    network.startNetwork("192.168.0.167", 3009);
+
+    variables.setClientType("EAC");
+    variables.setTargetSpeed(0);
+    variables.setTargetDoorStatus(0);
+    variables.setTargetMessage("ACK");
+
+    network.setJSON(variables);
+
+    System.out.println("EAC: Sending Acknowledgement...");
+    network.printSendingJSON();
+
+    network.getSocket().setSoTimeout(20000);
+
+    boolean ackReceived = false;
+    long startTime = System.currentTimeMillis();
+
+    while (!ackReceived && (System.currentTimeMillis() - startTime) < 20000) {
+        // network.getJSON(EACvariables);
+        if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
+            System.out.println("Connected to CCP - TEST");
+            ackReceived = true;
+            running = true;
+        }
+    }
+
+    if (!ackReceived) {
+        System.out.println("Error connecting to EAC");
+        running = false;
+    }
+   
 }
 
         while (running) {
+            variables.setClientType("CCP");
             System.out.println("===========================");
             System.out.println("STOP, GO, OPEN, CLOSE, EXIT");
 
