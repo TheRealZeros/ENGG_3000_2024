@@ -12,11 +12,14 @@
 #define MotorPinB 26
 #define MotorPinP 14
 
+extern int oldSpeed;
+
 // Function Declarations
 void initialiseMotors();
 void changeTargetSpeed(int mStatus);
 void updateCurrentSpeed();
-void emergencyStop();
+void forceStop();
+void restartMotor();
 void stop();
 
 
