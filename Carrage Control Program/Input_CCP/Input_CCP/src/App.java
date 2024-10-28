@@ -79,12 +79,12 @@ public class App {
 
         network.setJSON(EACvariables);
 
-        System.out.println("EAC: Sending Acknowledgement...");
-        network.sendJSON();
-        network.printSendingJSON();
-
         Thread getJSONThread = new Thread(() -> {
             while (!running.get()) {
+                System.out.println("EAC: Sending Acknowledgement...");
+                network.sendJSON();
+                network.printSendingJSON();
+                
                 network.getJSON(EACvariables, ip);
                 if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
                     System.out.println("EAC: Acknowledgement Received...");
