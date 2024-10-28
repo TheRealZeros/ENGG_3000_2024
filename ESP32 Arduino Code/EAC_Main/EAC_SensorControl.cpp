@@ -25,8 +25,8 @@ void readSensors() {
   duration1 = pulseIn(echoPin1, HIGH);
   duration2 = pulseIn(echoPin2, HIGH);
 
-  distance1 = speed / 10000 * duration1 / 2;
-  distance2 = speed / 10000 * duration2 / 2;
+  distance1 = (speed * (duration1 / 2))/1000;
+  distance2 = (speed * (duration2 / 2))/1000;
   Serial.printf("duration1: %ld, duration2: %ld\n", duration1, duration2);
   Serial.printf("distance2: %ld, distance1: %ld\n", distance2, distance1);
 }

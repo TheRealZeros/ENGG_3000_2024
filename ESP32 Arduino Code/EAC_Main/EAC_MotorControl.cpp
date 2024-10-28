@@ -3,6 +3,8 @@
 
 #include "EAC_MotorControl.h"
 
+int oldSpeed = 0;
+
 
 /* The following function will set the pins of the motor */
 void initialiseMotors() {
@@ -33,9 +35,9 @@ void updateCurrentSpeed() {
   Serial.printf("speed before: %lf ", currentSpeed);
   while(currentSpeed != targetSpeed) {
     if(currentSpeed < targetSpeed) {
-      currentSpeed += acceleration * deltaTime / 1000000;
+      currentSpeed += (acceleration * deltaTime) / 1000000;
     } else if(currentSpeed > targetSpeed) {
-      currentSpeed -= acceleration * deltaTime / 1000000;
+      currentSpeed -= (acceleration * deltaTime) / 1000000;
     }
   }
   currentSpeed = targetSpeed;
@@ -49,7 +51,16 @@ void forceStop() {
   analogWrite(MotorPinP, 0);
   digitalWrite(MotorPinA, LOW);
   digitalWrite(MotorPinB, LOW);
+  oldSpeed = currentSpeed;
   currentSpeed = 0;
+} 
+
+// after using forcestop, use this to start again
+void restartMotor() {
+  currentSpeed = oldSpeed;
+  digitalWrite(MotorPinA, LOW);
+  digitalWrite(MotorPinB, HIGH);
+  analogWrite(MotorPinP, currentSpeed);
 }
 
 // slows down normally, same as targetSpeed = 0;

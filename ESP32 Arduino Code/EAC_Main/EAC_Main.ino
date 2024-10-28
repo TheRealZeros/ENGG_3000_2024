@@ -74,19 +74,21 @@ void loop() {
     setGLED(true);
     setRLED(false);
     setYLED(false);
+    restartMotor();
   } else if(distance2 > 10) {
     setYLED(true);
     setRLED(false);
     setGLED(false);
+    restartMotor();
   } else {
     setRLED(true);
     setGLED(false);
     setYLED(false);
+    forceStop();
   }
 
   // Update the doors
   updateDoors(targetDoorStatus);
 
   // Delay for 100ms
-  delay(100);
 }

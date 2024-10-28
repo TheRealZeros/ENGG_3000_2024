@@ -17,6 +17,7 @@
 // Component Variables
 extern Servo doorServoL;
 extern Servo doorServoR;
+extern int realTimeServo;
 
 void initialiseServos();
 void updateDoors(int doorStatus);

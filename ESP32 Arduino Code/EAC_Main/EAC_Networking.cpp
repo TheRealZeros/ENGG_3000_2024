@@ -85,7 +85,7 @@ void checkMsgForSend(const char msg[]) {
         udp.write((const uint8_t*)buffer, n);
         udp.endPacket();
     } else {
-        const char* buffer = "EAC has recieved an invalid message!";
+        const char* buffer = "ack";
         udp.beginPacket(udpAdd, udpPort);
         udp.write((const uint8_t*)buffer, strlen(buffer));
         udp.endPacket();
