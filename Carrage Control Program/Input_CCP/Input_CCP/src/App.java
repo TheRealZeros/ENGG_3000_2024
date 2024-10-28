@@ -67,8 +67,9 @@ public class App {
 
         System.out.println("CCP: Sending Acknowledgement...");
         network.printSendingJSON();
-
         network.sendJSON();
+        running.set(true);
+
     } else if(input.equals("Test")) {
         network.startNetwork(ip, port);
 
@@ -81,17 +82,18 @@ public class App {
 
         Thread getJSONThread = new Thread(() -> {
             while (!running.get()) {
-                System.out.println("EAC: Sending Acknowledgement...");
-                network.sendJSON();
-                network.printSendingJSON();
+                network.getJSON(variables, ip);
                 
-                network.getJSON(EACvariables, ip);
-                if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
-                    System.out.println("EAC: Acknowledgement Received...");
-                    running.set(true);;
+                if(!variables.getClientType().equals("CCP") && !EACvariables.getCurrentMessage().equals("ACK")) {
+                    System.out.println("EAC: Sending Acknowledgement...");
+                    network.sendJSON();
+                    network.printSendingJSON();
                 } else {
-                    try {
-                        Thread.sleep(1000); // 1 second delay
+                    System.out.println("EAC: Acknowledgement Received...");
+                    System.out.println("YAY");
+                    running.set(true);;
+                try {
+                    Thread.sleep(1000); // 1 second delay
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                         System.out.println("Thread interrupted");

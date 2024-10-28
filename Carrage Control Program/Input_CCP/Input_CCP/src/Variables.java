@@ -6,7 +6,7 @@ public class Variables {
     String targetMessage;
 
     public Variables() {
-        client_type = "CCP";
+        client_type = "";
         targetSpeed = -1;
         targetDoorStatus = -1;
         targetMessage = "INI";

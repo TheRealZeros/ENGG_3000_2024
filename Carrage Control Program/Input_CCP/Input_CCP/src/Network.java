@@ -72,8 +72,12 @@ public class Network {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         try {
-            socket.setSoTimeout(2000);
+            socket.setSoTimeout(5000);
             socket.receive(packet);
+
+            // Print a message indicating a packet was received
+            System.out.println("Network: Packet received!");
+
             String receivedData = new String(packet.getData(), 0, packet.getLength());
             
             // Verify that the packet is from the correct source
@@ -105,10 +109,60 @@ public class Network {
             }
     
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("JSON: Error receiving data");
         }
     }
+    
+    public void getJSON(Variables vars, String expectedIP) {
+
+        System.out.println("JSON: Attempting to get JSON...");
+
+        byte[] buffer = new byte[1024];
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        try {
+            socket.setSoTimeout(5000);
+            socket.receive(packet);
+
+            // Print a message indicating a packet was received
+            System.out.println("Network: Packet received!");
+
+            String receivedData = new String(packet.getData(), 0, packet.getLength());
+            
+            // Verify that the packet is from the correct source
+            if (!packet.getAddress().getHostAddress().equals(expectedIP)) {
+                System.out.println("Network: Received packet from unexpected IP address: " + packet.getAddress().getHostAddress());
+                return;
+            }
+    
+            JSONParser parser = new JSONParser();
+            receivedJSON = (JSONObject) parser.parse(receivedData);
+    
+            if(receivedJSON.isEmpty()) {
+                System.out.println("JSON: ERROR No data received");
+            } else {
+                System.out.println("JSON: Received data: " + receivedData);
+                System.out.println("JSON: Got JSON!");
+            }
+            
+            // Handle the JSON data
+            if(receivedJSON.get("client_type").equals("EAC")) {
+                System.out.println("JSON: JSON is from EAC...");
+            } else if(receivedJSON.get("client_type").equals("CCP")) {
+                vars.setClientType((String) receivedJSON.get("client_type"));
+                vars.setTargetSpeed((int) receivedJSON.get("targetSpeed"));
+                vars.setTargetDoorStatus((int) receivedJSON.get("targetDoorStatus"));
+                vars.setTargetMessage((String) receivedJSON.get("targetMessage"));
+            } else {
+                System.out.println("JSON: Unknown client type");
+            }
+    
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("JSON: Error receiving data");
+        }
+    }
+
 
     public void printSendingJSON() {
         System.out.println("JSON: Sending JSON: " + sendingJSON);

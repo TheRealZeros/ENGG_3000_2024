@@ -6,7 +6,7 @@ public class EAC_Variables {
     String currentMessage;
 
     public EAC_Variables() {
-        client_type = "EAC";
+        client_type = "";
         currentSpeed = -1;
         currentDoorStatus = -1;
         currentMessage = "INI";
