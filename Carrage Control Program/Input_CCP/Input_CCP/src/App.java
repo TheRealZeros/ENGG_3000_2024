@@ -25,11 +25,7 @@ if (input.equals("Start")) {
     
     network.setJSON(variables);
 
-    System.out.println("Sending Acknowledgement...");
-    network.printSendingJSON();
-
-    network.sendJSON();
-
+    System.out.println("Awaiting Acknowledgement...");
     network.getSocket().setSoTimeout(20000);
 
     boolean ackReceived = false;
@@ -43,6 +39,10 @@ if (input.equals("Start")) {
             e.printStackTrace();
         }
         if (EACvariables.getClientType().equals("EAC") && EACvariables.getCurrentMessage().equals("ACK")) {
+            System.out.println("Sending Acknowledgement...");
+            network.sendJSON();
+            network.printSendingJSON();
+
             System.out.println("Connected to EAC");
             ackReceived = true;
             running = true;
@@ -160,12 +160,12 @@ if (input.equals("Start")) {
                     scanner.close();
                     network.closeNetwork();
                     break;
-            }
-        
+            }        
             
             try {
                 Thread.sleep(2000);
                 network.getJSON(EACvariables, ip);
+                EACvariables.toString();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
