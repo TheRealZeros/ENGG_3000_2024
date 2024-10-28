@@ -125,7 +125,7 @@ public class App {
                     network.printSendingJSON();
                     break;
                 case "GO":
-                    variables.setTargetSpeed(50);
+                    variables.setTargetSpeed(200);
                     System.out.println("Updating Speed:" + variables.getTargetSpeed());
                     variables.setTargetMessage("GO");
                     System.out.println("Updating Message:" + variables.getTargetMessage());
