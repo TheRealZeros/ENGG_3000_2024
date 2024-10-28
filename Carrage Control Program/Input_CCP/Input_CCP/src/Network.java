@@ -20,7 +20,7 @@ public class Network {
             socket = new DatagramSocket();
         } catch (SocketException e) {
             e.printStackTrace();
-            System.out.println("Error creating DatagramSocket");
+            System.out.println("Network: Error creating DatagramSocket");
         }
     }
 
@@ -30,6 +30,16 @@ public class Network {
 
     DatagramPacket packet;
 
+    public void startNetwork(String ip, int port) {
+        try {
+            InetAddress address = InetAddress.getByName(ip);
+            packet = new DatagramPacket(data, data.length, address, port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            System.out.println("Network: Unknown host: " + ip);
+        }
+    }
+
     public void setJSON(Variables vars) {
         sendingJSON.put("client_type", vars.getClientType());
         sendingJSON.put("targetSpeed", vars.getTargetSpeed());
@@ -38,15 +48,7 @@ public class Network {
         System.out.println("JSON: Set json to variables" + vars.toString());
     }
 
-    public void startNetwork(String ip, int port) {
-        try {
-            InetAddress address = InetAddress.getByName(ip);
-            packet = new DatagramPacket(data, data.length, address, port);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.out.println("Unknown host: " + ip);
-        }
-    }
+
     public void sendJSON() {
         try {
             socket.send(packet);
@@ -56,6 +58,9 @@ public class Network {
     }
 
     public void getJSON(EAC_Variables eacVars, String expectedIP) {
+
+        System.out.println("JSON: Attempting to get JSON...");
+
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         try {
@@ -64,7 +69,7 @@ public class Network {
             
             // Verify that the packet is from the correct source
             if (!packet.getAddress().getHostAddress().equals(expectedIP)) {
-                System.out.println("Warning: Received packet from unexpected IP address: " + packet.getAddress().getHostAddress());
+                System.out.println("Network: Received packet from unexpected IP address: " + packet.getAddress().getHostAddress());
                 return;
             }
     
@@ -72,36 +77,36 @@ public class Network {
             receivedJSON = (JSONObject) parser.parse(receivedData);
     
             if(receivedJSON.isEmpty()) {
-                System.out.println("Error: No data received");
+                System.out.println("JSON: ERROR No data received");
             } else {
-                System.out.println("Received data: " + receivedData);
-                System.out.println("Got JSON");
+                System.out.println("JSON: Received data: " + receivedData);
+                System.out.println("JSON: Got JSON!");
             }
             
             // Handle the JSON data
             if(receivedJSON.get("client_type").equals("CCP")) {
-                System.out.println("JSON is from CCP...");
+                System.out.println("JSON: JSON is from CCP...");
             } else if(receivedJSON.get("client_type").equals("EAC")) {
                 eacVars.setClientType((String) receivedJSON.get("client_type"));
                 eacVars.setCurrentSpeed((int) receivedJSON.get("currentSpeed"));
                 eacVars.setCurrentDoorStatus((int) receivedJSON.get("currentDoorStatus"));
                 eacVars.setCurrentMessage((String) receivedJSON.get("currentMessage"));
             } else {
-                System.out.println("Error: Unknown client type");
+                System.out.println("JSON: Unknown client type");
             }
     
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Error receiving data");
+            System.out.println("JSON: Error receiving data");
         }
     }
 
     public void printSendingJSON() {
-        System.out.println("Sending JSON: " + sendingJSON);
+        System.out.println("JSON: Sending JSON: " + sendingJSON);
     }
 
     public void printReceivedJSON() {
-        System.out.println("Received JSON: " + receivedJSON);
+        System.out.println("JSON: Received JSON: " + receivedJSON);
     }
 
     public void closeNetwork() {

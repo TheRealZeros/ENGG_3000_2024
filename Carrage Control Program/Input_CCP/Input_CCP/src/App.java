@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class App {
 
     static Network network = new Network();
-    static String ip = "192.168.0.167";
+    static String ip = "10.0.3.252";
     static int port = 3009;
 
     public static void main(String[] args) throws SocketException {
@@ -15,101 +15,102 @@ public class App {
         Variables variables = new Variables();
        EAC_Variables EACvariables = new EAC_Variables();
 
-if (input.equals("Start")) {
-    network.startNetwork(ip, port);
+    if (input.equals("Start")) {
+        network.startNetwork(ip, port);
 
-    variables.setClientType("CCP");
-    variables.setTargetSpeed(0);
-    variables.setTargetDoorStatus(0);
-    variables.setTargetMessage("ACK");
+        variables.setClientType("CCP");
+        variables.setTargetSpeed(0);
+        variables.setTargetDoorStatus(0);
+        variables.setTargetMessage("ACK");
+        
+        network.setJSON(variables);
+
+        
+        network.getSocket().setSoTimeout(20000);
+
+        long startTime = System.currentTimeMillis();
+
+        while (!running && System.currentTimeMillis() - startTime < 20000) {
+            
+            if (EACvariables.getClientType().equals("EAC") && EACvariables.getCurrentMessage().equals("ACK")) {
+                System.out.println("CCP: Sending Acknowledgement...");
+                network.sendJSON();
+                network.printSendingJSON();
+
+                System.out.println("CCP: Connected to EAC");
+                running = true;
+            } else {
+                try {
+                    System.out.println("CCP: Awaiting Acknowledgement...");
+                    Thread.sleep(500);
+                    network.getJSON(EACvariables, ip);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+    } else if (input.equals("Exit")) {
+        scanner.close();
+    } else if (input.equals("Override")) {
+        running = true;
+        network.startNetwork(ip, port);
+
+        variables.setClientType("CCP");
+        variables.setTargetSpeed(0);
+        variables.setTargetDoorStatus(0);
+        variables.setTargetMessage("ACK");
+
+        
+        network.setJSON(variables);
+
+        System.out.println("CCP: Sending Acknowledgement...");
+        network.printSendingJSON();
+
+        network.sendJSON();
+    } else if(input.equals("Test")) {
+        network.startNetwork(ip, port);
+
+        variables.setClientType("EAC");
+        variables.setTargetSpeed(0);
+        variables.setTargetDoorStatus(0);
+        variables.setTargetMessage("ACK");
+
+        network.setJSON(variables);
+
+        System.out.println("EAC: Sending Acknowledgement...");
+        network.sendJSON();
+        network.printSendingJSON();
+
+        network.getSocket().setSoTimeout(60000);
+
+        long startTime = System.currentTimeMillis();
+
+        while (!running) {
+            if((System.currentTimeMillis() - startTime) < 60000) {
+                try {
+                    Thread.sleep(500);
+                    network.getJSON(EACvariables, ip);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }  
+            } else {
+                System.out.println("EAC: Connection Timeout");
+                break;
+            }  
+
+            if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
+                System.out.println("EAC: Connected to CCP... lol");
+                running = true;
+            }
+        }
+
+        
+
+        
     
-    network.setJSON(variables);
-
-    System.out.println("Awaiting Acknowledgement...");
-    network.getSocket().setSoTimeout(20000);
-
-    boolean ackReceived = false;
-    long startTime = System.currentTimeMillis();
-
-    while (!ackReceived && (System.currentTimeMillis() - startTime) < 20000) {
-        try {
-            Thread.sleep(2000);
-            network.getJSON(EACvariables, ip);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (EACvariables.getClientType().equals("EAC") && EACvariables.getCurrentMessage().equals("ACK")) {
-            System.out.println("Sending Acknowledgement...");
-            network.sendJSON();
-            network.printSendingJSON();
-
-            System.out.println("Connected to EAC");
-            ackReceived = true;
-            running = true;
-        }
-    }
-
-    if (!ackReceived) {
-        System.out.println("Error connecting to EAC");
-        running = false;
-    }
-} else if (input.equals("Exit")) {
-    scanner.close();
-} else if (input.equals("Override")) {
-    running = true;
-    network.startNetwork(ip, port);
-
-    variables.setClientType("CCP");
-    variables.setTargetSpeed(0);
-    variables.setTargetDoorStatus(0);
-    variables.setTargetMessage("ACK");
-
-    
-    network.setJSON(variables);
-
-    System.out.println("Sending Acknowledgement...");
-    network.printSendingJSON();
-
-    network.sendJSON();
-} else if(input.equals("Test")) {
-    running = true;
-    network.startNetwork(ip, port);
-
-    variables.setClientType("EAC");
-    variables.setTargetSpeed(0);
-    variables.setTargetDoorStatus(0);
-    variables.setTargetMessage("ACK");
-
-    network.setJSON(variables);
-
-    System.out.println("EAC: Sending Acknowledgement...");
-    network.printSendingJSON();
-
-    network.getSocket().setSoTimeout(20000);
-
-    boolean ackReceived = false;
-    long startTime = System.currentTimeMillis();
-
-    while (!ackReceived && (System.currentTimeMillis() - startTime) < 20000) {
-        try {
-            Thread.sleep(2000);
-            network.getJSON(EACvariables, ip);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
-            System.out.println("Connected to CCP - TEST");
-            ackReceived = true;
-            running = true;
-        }
-    }
-
-    if (!ackReceived) {
-        System.out.println("Error connecting to EAC");
-        running = false;
-    }
-   
-}
+    } else {
 
         while (running) {
 
@@ -172,5 +173,5 @@ if (input.equals("Start")) {
             
         }
     }
-    
+    }   
 }
