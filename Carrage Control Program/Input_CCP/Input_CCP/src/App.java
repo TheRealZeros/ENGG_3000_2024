@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.*;;
 public class App {
 
     static Network network = new Network();
-    static String ip = "10.20.30.109";
+    static String ip = "10.20.30.1";
     static int port = 3009;
 
     public static void main(String[] args) throws SocketException {
