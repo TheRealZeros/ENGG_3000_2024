@@ -8,7 +8,7 @@
 #include "EAC_Variables.h"
 
 // PIN Definitions
-#define MotorPinA 27
+#define MotorPinA 15
 #define MotorPinB 26
 #define MotorPinP 14
 
