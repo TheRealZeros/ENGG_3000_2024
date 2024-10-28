@@ -35,6 +35,7 @@ public class Network {
         sendingJSON.put("targetSpeed", vars.getTargetSpeed());
         sendingJSON.put("targetDoorStatus", vars.getTargetDoorStatus());
         sendingJSON.put("targetMessage", vars.getTargetMessage());
+        System.out.println("JSON: Set json to variables" + vars.toString());
     }
 
     public void startNetwork(String ip, int port) {
@@ -54,15 +55,22 @@ public class Network {
         }
     }
 
-    public void getJSON(EAC_Variables eacVars) {
+    public void getJSON(EAC_Variables eacVars, String expectedIP) {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         try {
             socket.receive(packet);
             String receivedData = new String(packet.getData(), 0, packet.getLength());
+            
+            // Verify that the packet is from the correct source
+            if (!packet.getAddress().getHostAddress().equals(expectedIP)) {
+                System.out.println("Warning: Received packet from unexpected IP address: " + packet.getAddress().getHostAddress());
+                return;
+            }
+    
             JSONParser parser = new JSONParser();
             receivedJSON = (JSONObject) parser.parse(receivedData);
-
+    
             if(receivedJSON.isEmpty()) {
                 System.out.println("Error: No data received");
             } else {
@@ -70,7 +78,7 @@ public class Network {
                 System.out.println("Got JSON");
             }
             
-
+            // Handle the JSON data
             if(receivedJSON.get("client_type").equals("CCP")) {
                 System.out.println("JSON is from CCP...");
             } else if(receivedJSON.get("client_type").equals("EAC")) {
@@ -81,7 +89,7 @@ public class Network {
             } else {
                 System.out.println("Error: Unknown client type");
             }
-
+    
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error receiving data");

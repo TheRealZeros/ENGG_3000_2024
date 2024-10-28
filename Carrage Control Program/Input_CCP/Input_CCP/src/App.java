@@ -4,6 +4,8 @@ import java.util.Scanner;
 public class App {
 
     static Network network = new Network();
+    static String ip = "192.168.0.167";
+    static int port = 3009;
 
     public static void main(String[] args) throws SocketException {
         Boolean running = false;
@@ -14,7 +16,7 @@ public class App {
        EAC_Variables EACvariables = new EAC_Variables();
 
 if (input.equals("Start")) {
-    network.startNetwork("192.168.0.167", 3009);
+    network.startNetwork(ip, port);
 
     variables.setClientType("CCP");
     variables.setTargetSpeed(0);
@@ -34,7 +36,12 @@ if (input.equals("Start")) {
     long startTime = System.currentTimeMillis();
 
     while (!ackReceived && (System.currentTimeMillis() - startTime) < 20000) {
-        // network.getJSON(EACvariables);
+        try {
+            Thread.sleep(2000);
+            network.getJSON(EACvariables, ip);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (EACvariables.getClientType().equals("EAC") && EACvariables.getCurrentMessage().equals("ACK")) {
             System.out.println("Connected to EAC");
             ackReceived = true;
@@ -50,7 +57,7 @@ if (input.equals("Start")) {
     scanner.close();
 } else if (input.equals("Override")) {
     running = true;
-    network.startNetwork("192.168.0.167", 3009);
+    network.startNetwork(ip, port);
 
     variables.setClientType("CCP");
     variables.setTargetSpeed(0);
@@ -66,7 +73,7 @@ if (input.equals("Start")) {
     network.sendJSON();
 } else if(input.equals("Test")) {
     running = true;
-    network.startNetwork("192.168.0.167", 3009);
+    network.startNetwork(ip, port);
 
     variables.setClientType("EAC");
     variables.setTargetSpeed(0);
@@ -84,7 +91,12 @@ if (input.equals("Start")) {
     long startTime = System.currentTimeMillis();
 
     while (!ackReceived && (System.currentTimeMillis() - startTime) < 20000) {
-        // network.getJSON(EACvariables);
+        try {
+            Thread.sleep(2000);
+            network.getJSON(EACvariables, ip);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
             System.out.println("Connected to CCP - TEST");
             ackReceived = true;
@@ -100,6 +112,7 @@ if (input.equals("Start")) {
 }
 
         while (running) {
+
             variables.setClientType("CCP");
             System.out.println("===========================");
             System.out.println("STOP, GO, OPEN, CLOSE, EXIT");
@@ -147,6 +160,14 @@ if (input.equals("Start")) {
                     scanner.close();
                     network.closeNetwork();
                     break;
+            }
+        
+            
+            try {
+                Thread.sleep(2000);
+                network.getJSON(EACvariables, ip);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             
         }
