@@ -9,7 +9,7 @@ char readBuffer[255];
 char ssid[] = "ENGG2K3K";
 char pass[] = "";
 int udpPort = 3009;
-char* udpAdd = "10.20.30.176";
+char* udpAdd = "10.20.30.1";
 
 // JSON Variables
 JsonDocument json;
@@ -85,7 +85,7 @@ void checkMsgForSend(const char msg[]) {
         udp.write((const uint8_t*)buffer, n);
         udp.endPacket();
     } else {
-        const char* buffer = "ack";
+        const char* buffer = "ACK";
         udp.beginPacket(udpAdd, udpPort);
         udp.write((const uint8_t*)buffer, strlen(buffer));
         udp.endPacket();

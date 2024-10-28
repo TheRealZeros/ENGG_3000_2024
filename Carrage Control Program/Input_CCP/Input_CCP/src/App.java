@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.*;;
 public class App {
 
     static Network network = new Network();
-    static String ip = "10.0.2.154";
+    static String ip = "10.20.30.1";
     static int port = 3009;
 
     public static void main(String[] args) throws SocketException {
@@ -25,7 +25,6 @@ public class App {
         variables.setTargetMessage("ACK");
         
         network.setJSON(variables);
-
         
         network.getSocket().setSoTimeout(20000);
 
@@ -82,16 +81,19 @@ public class App {
 
         Thread getJSONThread = new Thread(() -> {
             while (!running.get()) {
-                network.getJSON(variables, ip);
-                
-                if(!variables.getClientType().equals("CCP") && !EACvariables.getCurrentMessage().equals("ACK")) {
-                    System.out.println("EAC: Sending Acknowledgement...");
+
+                System.out.println("EAC: Sending Acknowledgement...");
                     network.sendJSON();
                     network.printSendingJSON();
+
+                System.out.println("EAC: Awaiting Acknowledgement...");
+                    network.getJSON(variables, ip);
+                
+                if(!variables.getClientType().equals("CCP") && !variables.getTargetMessage().equals("ACK")) {
+                    System.out.println("EAC: Connected to CCP");
+                    running.set(true);
                 } else {
-                    System.out.println("EAC: Acknowledgement Received...");
-                    System.out.println("YAY");
-                    running.set(true);;
+                    network.sendJSON();
                 try {
                     Thread.sleep(1000); // 1 second delay
                     } catch (InterruptedException e) {
