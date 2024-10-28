@@ -72,6 +72,7 @@ public class Network {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         try {
+            socket.setSoTimeout(2000);
             socket.receive(packet);
             String receivedData = new String(packet.getData(), 0, packet.getLength());
             

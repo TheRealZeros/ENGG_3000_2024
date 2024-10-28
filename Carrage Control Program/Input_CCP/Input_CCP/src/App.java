@@ -1,5 +1,6 @@
 import java.net.SocketException;
 import java.util.Scanner;
+import java.util.concurrent.atomic.*;;
 
 public class App {
 
@@ -8,7 +9,7 @@ public class App {
     static int port = 3009;
 
     public static void main(String[] args) throws SocketException {
-        Boolean running = false;
+        AtomicBoolean running = new AtomicBoolean(false);
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter 'Start' to start the program");
         String input = scanner.nextLine();
@@ -30,7 +31,7 @@ public class App {
 
         long startTime = System.currentTimeMillis();
 
-        while (!running && System.currentTimeMillis() - startTime < 20000) {
+        while (!running.get() && System.currentTimeMillis() - startTime < 20000) {
             
             if (EACvariables.getClientType().equals("EAC") && EACvariables.getCurrentMessage().equals("ACK")) {
                 System.out.println("CCP: Sending Acknowledgement...");
@@ -38,7 +39,7 @@ public class App {
                 network.printSendingJSON();
 
                 System.out.println("CCP: Connected to EAC");
-                running = true;
+                running.set(true);
             } else {
                 try {
                     System.out.println("CCP: Awaiting Acknowledgement...");
@@ -82,29 +83,28 @@ public class App {
         network.sendJSON();
         network.printSendingJSON();
 
-        network.getSocket().setSoTimeout(60000);
-
-        long startTime = System.currentTimeMillis();
-
-        while (!running) {
-            if((System.currentTimeMillis() - startTime) < 60000) {
-                try {
-                    Thread.sleep(500);
-                    network.getJSON(EACvariables, ip);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }  
-            }  else if(EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
-                System.out.println("EAC: Connected to CCP... lol");
-                running = true;
+        Thread getJSONThread = new Thread(() -> {
+            while (!running.get()) {
+                network.getJSON(EACvariables, ip);
+                if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
+                    System.out.println("EAC: Acknowledgement Received...");
+                    running.set(true);;
+                } else {
+                    try {
+                        Thread.sleep(1000); // 1 second delay
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        System.out.println("Thread interrupted");
+                    }
+                }
             }
-            
-        }
-        
+        });
     
-    } else {
+        getJSONThread.start();
+    
+    } 
 
-        while (running) {
+        while (running.get()) {
 
             variables.setClientType("CCP");
             System.out.println("===========================");
@@ -149,7 +149,7 @@ public class App {
                     break;
                 case "EXIT":
                     System.out.println("Exiting...");
-                    running = false;
+                    running.set(false);;
                     scanner.close();
                     network.closeNetwork();
                     break;
@@ -164,6 +164,6 @@ public class App {
             }
             
         }
-    }
+    
     }   
 }
