@@ -45,7 +45,15 @@ public class Network {
         sendingJSON.put("targetSpeed", vars.getTargetSpeed());
         sendingJSON.put("targetDoorStatus", vars.getTargetDoorStatus());
         sendingJSON.put("targetMessage", vars.getTargetMessage());
-        System.out.println("JSON: Set json to variables" + vars.toString());
+        System.out.println("JSON: Set CCP json to variables" + vars.toString());
+    }
+
+    public void setJSON(EAC_Variables vars) {
+        sendingJSON.put("client_type", vars.getClientType());
+        sendingJSON.put("currentSpeed", vars.getCurrentSpeed());
+        sendingJSON.put("currentDoorStatus", vars.getCurrentDoorStatus());
+        sendingJSON.put("currentMessage", vars.getCurrentMessage());
+        System.out.println("JSON: Set EAC json to variables" + vars.toString());
     }
 
 

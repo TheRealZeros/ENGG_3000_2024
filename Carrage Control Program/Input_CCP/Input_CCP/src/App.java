@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class App {
 
     static Network network = new Network();
-    static String ip = "10.0.3.252";
+    static String ip = "10.0.2.154";
     static int port = 3009;
 
     public static void main(String[] args) throws SocketException {
@@ -54,7 +54,6 @@ public class App {
     } else if (input.equals("Exit")) {
         scanner.close();
     } else if (input.equals("Override")) {
-        running = true;
         network.startNetwork(ip, port);
 
         variables.setClientType("CCP");
@@ -72,12 +71,12 @@ public class App {
     } else if(input.equals("Test")) {
         network.startNetwork(ip, port);
 
-        variables.setClientType("EAC");
-        variables.setTargetSpeed(0);
-        variables.setTargetDoorStatus(0);
-        variables.setTargetMessage("ACK");
+        EACvariables.setClientType("EAC");
+        EACvariables.setCurrentSpeed(0);
+        EACvariables.setCurrentDoorStatus(0);
+        EACvariables.setCurrentMessage("ACK");
 
-        network.setJSON(variables);
+        network.setJSON(EACvariables);
 
         System.out.println("EAC: Sending Acknowledgement...");
         network.sendJSON();
@@ -95,19 +94,12 @@ public class App {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }  
-            } else {
-                System.out.println("EAC: Connection Timeout");
-                break;
-            }  
-
-            if (EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
+            }  else if(EACvariables.getClientType().equals("CCP") && EACvariables.getCurrentMessage().equals("ACK")) {
                 System.out.println("EAC: Connected to CCP... lol");
                 running = true;
             }
+            
         }
-
-        
-
         
     
     } else {
